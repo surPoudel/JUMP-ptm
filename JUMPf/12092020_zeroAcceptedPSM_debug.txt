@@ -1,0 +1,148 @@
+diff --git a/JUMPf/idsum2/GenerateHtml_Tim07102014.pm b/JUMPf/idsum2/GenerateHtml_Tim07102014.pm
+index cf7420c..5034e3f 100644
+--- a/JUMPf/idsum2/GenerateHtml_Tim07102014.pm
++++ b/JUMPf/idsum2/GenerateHtml_Tim07102014.pm
+@@ -131,7 +131,8 @@ sub gen_sumIDHtml {
+ 	#print HTML " </TR>\n";
+ 
+         my $unique_fpr = 0;
+-        $unique_fpr = $$fprhash{'protein_bad'} / $subgroup_num * 100;
++        #$unique_fpr = $$fprhash{'protein_bad'} / $subgroup_num * 100;
++        $unique_fpr = $$fprhash{'protein_bad'} / ($subgroup_num+0.01) * 100;
+         
+     $uniqpro_fdr = $unique_fpr;
+     $pro_fdr = $$fprhash{'protein_fpr'};
+@@ -506,7 +507,8 @@ sub gen_IDHtml {
+ 	#print HTML "<TR>\n";
+ 	my ($overallrate, $rate1, $rate2, $rate3) = (0,0,0,0);
+ 	my $unique_fpr = 0;
+-	$unique_fpr = $$fprhash{'protein_bad'} / $subgroup_num * 100;
++	#$unique_fpr = $$fprhash{'protein_bad'} / $subgroup_num * 100;
++        $unique_fpr = $$fprhash{'protein_bad'} / ($subgroup_num+0.01) * 100;
+ 	
+ 	$uniqpro_fdr = $unique_fpr;
+     $pro_fdr = $$fprhash{'final_protein_fpr'};
+@@ -779,7 +781,8 @@ sub gen_IDHtml_old {
+ 	print HTML "<TR>\n";
+ 	my ($overallrate, $rate1, $rate2, $rate3) = (0,0,0,0);
+ 	my $unique_fpr = 0;
+-	$unique_fpr = $$fprhash{'protein_bad'} / $subgroup_num * 100;
++	#$unique_fpr = $$fprhash{'protein_bad'} / $subgroup_num * 100;
++        $unique_fpr = $$fprhash{'protein_bad'} / ($subgroup_num+0.01) * 100;
+     printf HTML "<TD Align=center><Font Size=2>Unique Protein FDR = %.2f%%,&nbsp Protein FDR = %.2f%%,&nbsp  Peptide FDR = %.2f%% ", $unique_fpr, $$fprhash{'final_protein_fpr'}, $$fprhash{'final_peptide_fpr'};
+ 
+ 	print HTML "</font></TD>\n"; #changed to total peptide DMD 5/19/05
+@@ -1019,7 +1022,8 @@ sub gen_IDwGHtml{
+ 	my ($overallrate, $rate1, $rate2, $rate3) = (0,0,0,0);
+ 
+         my $unique_fpr = 0;
+-        $unique_fpr = $$fprhash{'protein_bad'} / $subgroup_num * 100;
++        #$unique_fpr = $$fprhash{'protein_bad'} / $subgroup_num * 100;
++        $unique_fpr = $$fprhash{'protein_bad'} / ($subgroup_num+0.01) * 100;
+      $uniqpro_fdr = $unique_fpr;
+      $pro_fdr = $$fprhash{'final_protein_fpr'};
+      $pep_fdr = $$fprhash{'final_peptide_fpr'};
+@@ -1325,7 +1329,8 @@ sub gen_IDmodHtml{
+ 	#print HTML "<TR>\n";
+ 
+     my $unique_fpr = 0;
+-    $unique_fpr = $$fprhash{'protein_bad'} / $subgroup_num * 100;
++    #$unique_fpr = $$fprhash{'protein_bad'} / $subgroup_num * 100;
++    $unique_fpr = $$fprhash{'protein_bad'} / ($subgroup_num+0.01) * 100;
+         
+     $uniqpro_fdr = $unique_fpr;
+     $pro_fdr = $$fprhash{'final_protein_fpr'};
+@@ -1627,7 +1632,8 @@ sub gen_IDwGmodHtml{
+ 
+ 	#print HTML "<TR>\n";
+         my $unique_fpr = 0;
+-        $unique_fpr = $$fprhash{'protein_bad'} / $subgroup_num * 100;
++        #$unique_fpr = $$fprhash{'protein_bad'} / $subgroup_num * 100;
++    	$unique_fpr = $$fprhash{'protein_bad'} / ($subgroup_num+0.01) * 100;
+     $uniqpro_fdr = $unique_fpr;
+     $pro_fdr = $$fprhash{'final_protein_fpr'};
+     $pep_fdr = $$fprhash{'final_peptide_fpr'};
+@@ -2060,7 +2066,8 @@ sub gen_sumIDHtml_old {
+ 	print HTML " </TR>\n";
+ 
+         my $unique_fpr = 0;
+-        $unique_fpr = $$fprhash{'protein_bad'} / $subgroup_num * 100;
++        #$unique_fpr = $$fprhash{'protein_bad'} / $subgroup_num * 100;
++    	$unique_fpr = $$fprhash{'protein_bad'} / ($subgroup_num+0.01) * 100;
+     printf HTML "<TD Align=center><Font Size=2>Unique Protein FDR = %.2f%%,&nbsp Protein FDR = %.2f%%,&nbsp  Peptide FDR = %.2f%% ", $unique_fpr, $$fprhash{'protein_fpr'}, $$fprhash{'peptide_fpr'};
+ 
+ #    printf HTML "<TD Align=center><Font Size=2>Protein FDR = %.2f%%,&nbsp  Peptide FDR = %.2f%% ", $$fprhash{'protein_fpr'}, $$fprhash{'peptide_fpr'};
+@@ -2350,7 +2357,8 @@ sub gen_sumIDwGHtml{
+ 	#print HTML " </TR>\n";
+ 
+         my $unique_fpr = 0;
+-        $unique_fpr = $$fprhash{'protein_bad'} / $subgroup_num * 100;
++        #$unique_fpr = $$fprhash{'protein_bad'} / $subgroup_num * 100;
++    	$unique_fpr = $$fprhash{'protein_bad'} / ($subgroup_num+0.01) * 100;
+         
+     $uniqpro_fdr = $unique_fpr;
+     $pro_fdr = $$fprhash{'protein_fpr'};
+@@ -2715,7 +2723,8 @@ sub gen_sumIDmodHtml{
+ 	#print HTML " </TR>\n";
+ 
+     my $unique_fpr = 0;
+-    $unique_fpr = $$fprhash{'protein_bad'} / $subgroup_num * 100;
++ #   $unique_fpr = $$fprhash{'protein_bad'} / $subgroup_num * 100;
++    	$unique_fpr = $$fprhash{'protein_bad'} / ($subgroup_num+0.01) * 100;
+        
+     $uniqpro_fdr = $unique_fpr;
+     $pro_fdr = $$fprhash{'final_protein_fpr'};
+@@ -3054,7 +3063,8 @@ sub gen_sumIDwGmodHtml{
+ 	#print HTML " </TR>\n";
+ 
+         my $unique_fpr = 0;
+-        $unique_fpr = $$fprhash{'protein_bad'} / $subgroup_num * 100;
++        #$unique_fpr = $$fprhash{'protein_bad'} / $subgroup_num * 100;
++    	$unique_fpr = $$fprhash{'protein_bad'} / ($subgroup_num+0.01) * 100;
+     
+     $uniqpro_fdr = $unique_fpr;
+     $pro_fdr = $$fprhash{'final_protein_fpr'};
+diff --git a/JUMPf/jump_f.pl b/JUMPf/jump_f.pl
+index b47ea0e..ec3ac66 100644
+--- a/JUMPf/jump_f.pl
++++ b/JUMPf/jump_f.pl
+@@ -1197,7 +1197,8 @@ close (DTAFILES);
+                }
+ 
+     #protein and peptide fdr calculation (after removing one hit wonder)
+-    my ($bad,$good)=(0,0);
++    #my ($bad,$good)=(0,0);
++	my ($bad,$good)=(0.01,0.01);
+ 
+       my ($proteinfpr);
+      ($proteinfpr,$good,$bad)=pro_fpr(\%proteinhash);
+@@ -1217,7 +1218,8 @@ close (DTAFILES);
+ =cut
+ 	$fprhash{'protein_bad'} = $bad;
+ 
+-    ($bad,$good)=(0,0);
++    #($bad,$good)=(0,0);
++	($bad,$good)=(0.01,0.01);
+   # if one-hit-wonder are removed, the final protein and peptide FDR FDRs will be re-calculated
+   #if ( $paramhash{one_hit_wonders_removal} !=0 ){
+   if ( $paramhash{one_hit_wonders_removal} !=0 or defined($paramhash{'min_protein_SC'}) and $paramhash{'min_protein_SC'}>1){
+@@ -1942,7 +1944,8 @@ sub pep_fpr
+ 	my ($peptidehashref)=@_;
+ 	my %peptidehash = %$peptidehashref;
+ 	
+-	my ($bad,$good)=(0,0);
++	#my ($bad,$good)=(0,0);
++	my ($bad,$good)=(0.01,0.01);
+ 	my %temp_peptidehash;
+ 	foreach my $peptide (keys %peptidehash)
+     	{
+@@ -2003,7 +2006,8 @@ sub pro_fpr
+ 	my ($proteinhashref)=@_;
+ 	my %proteinhash = %$proteinhashref;
+ 	
+-	my ($bad,$good)=(0,0);
++	#my ($bad,$good)=(0,0);
++	my ($bad,$good)=(0.01,0.01);
+     foreach my $protein (keys %proteinhash)
+     {
+ 			if($protein =~ /Decoy/)

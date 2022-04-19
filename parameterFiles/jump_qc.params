@@ -1,0 +1,8 @@
+run1 = /research/rgs01/project_space/penggrp/Alzheimer_MountSinai/penggrp/proteogenomics/batch1/gnm_stage1_test2_variantOnly/intermediate/NY198case_b01_f01/NY198case_b01_f01.1
+run2 = /research/rgs01/project_space/penggrp/Alzheimer_MountSinai/penggrp/proteogenomics/batch1/gnm_stage1_test2_variantOnly/intermediate/NY198case_b01_f02/NY198case_b01_f02.1
+run3 = /research/rgs01/project_space/penggrp/Alzheimer_MountSinai/penggrp/proteogenomics/batch1/gnm_stage1_test2_variantOnly/intermediate/NY198case_b01_f03/NY198case_b01_f03.1
+run4 = /research/rgs01/project_space/penggrp/Alzheimer_MountSinai/penggrp/proteogenomics/batch1/gnm_stage1_test2_variantOnly/intermediate/NY198case_b01_f04/NY198case_b01_f04.1
+confident_IDtxt = /research/rgs01/project_space/penggrp/Alzheimer_MountSinai/penggrp/proteogenomics/batch1/gnm_stage1_test2_variantOnly/intermediate/.sum_confident_PSMs/ID.txt
+accepted_IDtxt = /research/rgs01/project_space/penggrp/Alzheimer_MountSinai/penggrp/proteogenomics/batch1/gnm_stage1_test2_variantOnly/intermediate/sum_accepted_PSMs/ID.txt
+PSM_recoveray_rate = 99
+output_folder = accepted_PSMs

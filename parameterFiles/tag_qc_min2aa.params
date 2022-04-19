@@ -1,0 +1,16 @@
+[tagqc]
+
+#pep_xml file example: /home/spoudel1/PanPTM_Paper_2021/Tag_based_QC/Same_DB_comet_search/w010/w010.pep.xml. This is comet search pepxml file which will be rescored using tags from jump search
+pep_xml = /home/spoudel1/PanPTM_Paper_2021/Figure1/Test_Pipeline_Precursor_MassFixed/Pipeline_Results_withQC/Stage_1/w030/w030.1.pep.xml
+
+#this is tag file from jump -search and this will be used to rescore pepxml file and geenrate a new reorder pepxml file
+tag_file = /home/spoudel1/PanPTM_Paper_2021/w030/w030.1.tags
+
+#start scan
+start_scan = 0
+
+#end scan
+end_scan = 0
+
+#min_tag_length number of amino acid in the tag
+min_tag_length = 2
