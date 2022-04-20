@@ -325,6 +325,11 @@ def stage_wise_search(folders, mzXMLs, comet,logFile, scanChargeDf=None):
         basefile_noext = basefile.split(".")[0]
         makedirectory(basefile_noext)
         
+        mzxml_file = mz_file.split(".ms2")[0]+".mzXML"
+
+        #copy mzxml file to the stage folder
+        softlink_mzxml([mz_file], basefile_noext)
+
         os.chdir(folders+"/"+basefile_noext)
         cpFile(mz_file, folders+"/"+basefile_noext)
         cpFile(comet_params, "comet.params")
