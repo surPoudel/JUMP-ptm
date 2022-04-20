@@ -319,7 +319,7 @@ def stage_wise_search(folders, mzXMLs, comet,logFile, scanChargeDf=None):
     #input mzXMLs file list
     for mz_file in mzXMLs:
         os.chdir(folders)
-        comet_params = glob.glob(folders+"/*.params")[0]
+        comet_params = glob.glob(folders+"/stage_*_comet.params")[0]
         
         basefile = os.path.basename(mz_file)
         basefile_noext = basefile.split(".")[0]
