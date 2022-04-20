@@ -70,7 +70,7 @@ jump_f_program = "perl {}/JUMPf/jump_f.pl".format(source_path)
 # jump_f_program = "perl /hpcf/authorized_apps/proteomics_apps/pipeline/release/version1.13.004/JUMPf/bin/_jump_f.pl"
 #deisotope_program = "python {}/Deisotope/DeisotopeMS1.py".format(source_path)
 jump_f_params = "{}/parameterFiles/jump_fc_HH_tmt10_human.params".format(source_path)
-jump_q_program = "perl {}/JUMPq/jump_q.pl".format(source_path)
+jump_q_program = "python {}/JUMPq/jump_q.py".format(source_path)
 jump_q_params = "{}/parameterFiles/jump_qc_HH_tmt10_human.params".format(source_path)
 
 #tag program
