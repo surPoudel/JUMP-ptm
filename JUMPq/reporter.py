@@ -62,6 +62,66 @@ def extractReporters(files, df, params, **kwargs):
     return res, reporterSummary
 
 
+def extractReporters_multistage(files_dict, df, params, **kwargs):
+    # Input arguments
+    # files: mzXML or ms2 files to be quantified
+    # df: dataframe of ID.txt file
+    # params: parameters
+
+    if "sig126" in kwargs:
+        print("\n  Refined extraction of TMT reporter ion peaks")
+    else:
+        print("\n  Extraction of TMT reporter ion peaks")
+
+    dictQuan = {}
+    for file in files_dict.keys():
+        print("    Working on {}".format(file))
+        # print("    Working on {}".format(os.path.basename(file)))
+        try:
+            reader = mzxml.MzXML(files_dict[file][0])
+        except:
+            print ("No mzXML file found. Trying .ms2 file")
+            try:
+                reader = ms2.IndexedMS2(files_dict[file][0])
+            except:
+                print (" Currently, either .mzXML or .ms2 file is supported")
+        #if ext == ".mzXML":
+        #    reader = mzxml.MzXML(file)  # mzXML file reader
+        #elif ext == ".ms2":
+        #    reader = ms2.IndexedMS2(file)  # MS2 file reader
+        #else:
+         #   sys.exit(" Currently, either .mzXML or .ms2 file is supported")
+
+        # Extraction of TMT reporter ions in each fraction
+
+        for stage_file in files_dict[file]:
+            print (stage_file)
+            scans=df.loc[df['frac'] == stage_file].scan.astype("int").unique()
+            progress = progressBar(len(scans))
+            for scan in scans:
+                progress.increment()
+                spec = reader[str(scan)]
+                res = getReporterIntensity(spec, params, **kwargs)  # Array of reporter m/z and intensity values
+                key = stage_file + "_" + str(scan)
+                dictQuan[key] = res
+
+    # Create a dataframe of quantification data
+    reporters = params["tmt_reporters_used"].split(";")
+    colNames = [re.sub("sig", "mz", i) for i in reporters] + reporters
+    res = pd.DataFrame.from_dict(dictQuan, orient='index', columns=colNames)
+
+    # Summary of quantified TMT reporter ions
+    print()
+    reporterSummary = getReporterSummary(res, reporters)
+    nTot = len(res)
+    for reporter in reporters:
+        n = reporterSummary[reporter]["nPSMs"]
+        print("    %s\t%d (%.2f%%) matched" % (reporter, n, n / nTot * 100))
+
+    return res, reporterSummary
+
+
+
 def getReporterIntensity(spec, params, **kwargs):
     tol = 20
     reporterNames = params["tmt_reporters_used"].split(";")
