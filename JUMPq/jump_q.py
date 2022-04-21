@@ -3,11 +3,12 @@ import numpy as np
 import pandas as pd
 from datetime import datetime
 from utils import getParams, correctImpurity
-from reporter import extractReporters
+from reporter import *
 from filters import filterPSMs
 from normalization import getLoadingBias, normalization
 from summarization import summarization
 from publication import *
+
 
 if __name__ == "__main__":
 
@@ -32,20 +33,33 @@ if __name__ == "__main__":
     # Note that this part may need to be revised according to the Jump -f result format
 
     print("  Loading ID.txt file")
-    dfId = pd.read_table(params["idtxt"], sep=";", skiprows=1, header=0)
+    dfId = pd.read_table(params["idtxt"], sep=";", skiprows=1, header=0, low_memory=False)
 
     # Miscellaneous part for handling ID.txt
     dfId["frac"] = dfId["Outfile"].apply(lambda x: os.path.dirname(x).rsplit(".", 1)[0] + ".ms2")
     dfId["scan"] = dfId["Outfile"].apply(lambda x: os.path.basename(x).split(".")[1])
     dfId["key"] = dfId["frac"] + "_" + dfId["scan"]
-    fracs = dfId["frac"].unique()
+    fracs_all = list(set(dfId["frac"]))
+    
+    fracs_dict = {}
+    for fracname in fracs_all:
+        exp = os.path.basename(fracname)
+        if exp not in fracs_dict.keys():
+            fracs_dict[exp] = [fracname]
+        else:
+            fracs_dict[exp].append(fracname)
+
+    fracs = list(fracs_dict.values())
+    print ('  Total fractions to be analyzed = ',len(fracs))
 
     ##################################
     # Extract TMT reporter ion peaks #
     ##################################
     # 1st round of reporter ion extraction
     # dfQuan, reporterSummary = parExtractReporters(fracs, dfId, params, nCores)
-    dfQuan, reporterSummary = extractReporters(fracs, dfId, params)
+    #dfQuan, reporterSummary = extractReporters(fracs, dfId, params)
+
+    dfQuan, reporterSummary = extractReporters_multistage(fracs_dict, dfId, params)
 
     # Before 2nd round of TMT reporter extraction, m/z-shifts of reporters are summarized
     print("\n  m/z-shift in each TMT reporter")
@@ -57,12 +71,14 @@ if __name__ == "__main__":
 
     # 2nd round of reporter ion extraction
     # dfQuan, reporterSummary = parExtractReporters(fracs, dfId, params, nCores, **reporterSummary)
-    dfQuan, reporterSummary = extractReporters(fracs, dfId, params, **reporterSummary)
+    # dfQuan, reporterSummary = extractReporters(fracs, dfId, params, **reporterSummary)
+    dfQuan, reporterSummary = extractReporters_multistage(fracs_dict, dfId, params, **reporterSummary)
 
     ###########################
     # TMT impurity correction #
     ###########################
     dfQuan = correctImpurity(dfQuan, params)
+    
 
     #####################
     # Filtering of PSMs #
