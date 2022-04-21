@@ -24,7 +24,7 @@ Note that JUMPptm only supports 64-bit macOS and Linux.
 ----
 
 ## JUMPptm Publication:
-  * [Poudel et al. Proteomics XXXX](http://willbeupdated).
+  * The manuscript is submitted and this part will be updated later.
   * If you use JUMPptm as part of a publication, please include this reference.
 
 ---
