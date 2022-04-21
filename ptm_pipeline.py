@@ -290,9 +290,6 @@ for folders in stages_folder:
 
 write_log (logFile,"\n\nThis section of logFile has concatenation of jump -f results")
 
-allParamLines_q, allComments_q, allParamsDict_q  = storeParamsFile(jump_q_params)
-# replace impurity matrix from github resources impurity_matrix =
-allParamsDict_q["impurity_matrix"] = "{}/{}".format(source_path,allParamsDict_q["impurity_matrix"])
 
 
 all_stage_idtxts = []
@@ -378,7 +375,11 @@ with open(merge_directory+"/ID.txt","w") as final1:
 
 
 ###### Combination of jump -f and perform jump -q on the concatenated results #####
+
 allParamLines_q, allComments_q, allParamsDict_q  = storeParamsFile(jump_q_params)
+# replace impurity matrix from github resources impurity_matrix =
+allParamsDict_q["impurity_matrix"] = "{}/resources/{}".format(source_path,allParamsDict_q["impurity_matrix"])
+print ("impurity matrix path is ",allParamsDict_q["impurity_matrix"])
 
 os.chdir(merge_directory)
 
