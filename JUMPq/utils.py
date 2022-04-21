@@ -35,7 +35,7 @@ def correctImpurity(df, params):
         dfCorrected = df[reporters].dot(dfImpurity.T)
         dfCorrected.columns = reporters
         df[reporters] = pd.concat([df[reporters]/2, dfCorrected]).groupby(level=0).max()
-    #print (df) 	
+    #print (df)     
     return df
 
 
