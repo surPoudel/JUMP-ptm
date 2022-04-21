@@ -20,7 +20,7 @@ min_intensity_value_1_2_psm = 2000, 10000				# Minimum intensity threshold
 
 # Impurity correction parameters
 impurity_correction = 1							# 1 = Yes; 0 = No; if only a part of reporters are used, it should be set to 0
-impurity_matrix = /hpcf/authorized_apps/proteomics_apps/pipeline/release/version1.13.0/JUMPq/TMT10.ini	# impurity table for correction
+impurity_matrix = TMT10.ini	# impurity table for correction
 
 # Loading-bias correction is generally required to remove systematic biases of mass spectrometry data
 loading_bias_correction = 1						# 1 = Yes; 0 = No;
