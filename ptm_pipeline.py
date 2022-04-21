@@ -291,6 +291,9 @@ for folders in stages_folder:
 write_log (logFile,"\n\nThis section of logFile has concatenation of jump -f results")
 
 allParamLines_q, allComments_q, allParamsDict_q  = storeParamsFile(jump_q_params)
+# replace impurity matrix from github resources impurity_matrix =
+allParamsDict_q["impurity_matrix"] = "{}/{}".format(source_path,allParamsDict_q["impurity_matrix"])
+
 
 all_stage_idtxts = []
 all_stage_id_uni_pep = []
