@@ -188,8 +188,10 @@ os.chdir(curr_path+"/{}".format(result_folder))
 
 write_log (logFile,"\n\nThis section of logFile has multiple stages PTM searches information")
 
-
+stage_ptm_dict = {}
 ptms_list = []
+dynamic_mods_aa_dict = {}
+ptm_aa_dict = {}
 for x in range(1,int(allParamsDict["total_ptm_stages"])+1):
 
     if "ptm_stage_{}_amino_acids".format(x) in allParamsDict.keys():
@@ -215,10 +217,10 @@ for x in range(1,int(allParamsDict["total_ptm_stages"])+1):
             write_log (logFile," \n\n****** Generating Parameter files *********\n")
             write_log (logFile," Working for stage {}".format(x))
 
-            #gives the list of ptms that are being searched. 
-            working_ptms = all_stages_parameters_dict["ptm_stage_{}".format(x)]
-            ptms_list.append(working_ptms)
+            
+            ptms_info_params(all_stages_parameters_dict, x, stage_ptm_dict, dynamic_mods_aa_dict,ptm_aa_dict)
 
+            working_ptms = stage_ptm_dict["Stage_"+str(x)]
             write_log (logFile," This stage will search {} ptms".format(working_ptms))
 
             #updates check_stage with each stages
@@ -232,6 +234,11 @@ for x in range(1,int(allParamsDict["total_ptm_stages"])+1):
 
             write_log (logFile," PTM parameter file for {} ptms is generated and stored as {} ".format(working_ptms, ptm_params))
 
+
+
+# print (stage_ptm_dict)
+# print (dynamic_mods_aa_dict)
+# print(ptm_aa_dict)
 
 #user is expected to have total ptm stages parameter same as the number of stage they want to search. This part checks and gives warnign if the stage number does not match
 #this is not FATAl so the program goes on
