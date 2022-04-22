@@ -13,6 +13,7 @@ from format_pep_xml import *
 from idtxt_merge_filter import *
 from customDB_gen import *
 from program_signature import program_display
+from postQuantificationFunctions import *
 import subprocess
 
 
@@ -403,6 +404,84 @@ cmd = "{} {}".format(jump_q_program,out_params)
 os.system(cmd)
 
 write_log(logFile,"All ptm stages are successfully searched, filtered, merged and quantified.")
+
+#get the final quantification matrix
+in1 = glob.glob("{}/quan_*/publications/id_uni_pep_quan.txt".format(merge_directory))[0]
+# in1 = "/research_jude/rgs01_jude/groups/penggrp/projects/Alzheimer_BannerSunInstitute/penggrp/proteomics/batch0_pooledSamples/PanPTM_Paper_2021/github_test_6_small_file/Pipeline_Results_jumpptm_simplified/merge_and_consolidation/quan_HH_tmt10_human_comet/publications/id_uni_pep_quan.txt"
+
+
+
+write_log(logFile,"Generating final pan ptm excel table. This will take time depending on the number of quantified peptides")
+#final quantification matrix from jump -q
+
+df_batch0_q = pd.read_csv(in1, delimiter="\t", low_memory=False)
+
+#stage_ptm_dict = {'Stage_1': 'phosphorylation', 'Stage_2': 'Deamidation'}
+
+
+channels_cols = []
+for x in df_batch0_q.columns:
+    if "sig" in x:
+        channels_cols.append(x)
+
+keep_cols = ['Peptides', 'Peptides_original','Protein Group#', 'Protein Accession #',
+       'Protein Description', 'GN', 'PSM#', 'Run#', 'Scan#','m/z', 'z',
+       'Xcorr',  'ptm_stage'] + channels_cols
+
+df_batch0_q["PTM_types"] = df_batch0_q.ptm_stage.map(stage_ptm_dict)
+#result_folder = dirname(dirname(dirname(dirname(in1))))
+
+all_pep_xmls = glob.glob(result_folder+"/Stage*/*/*.pep.xml")
+stage_pep_dict = {}
+for peps in all_pep_xmls:
+    stage = os.path.basename(dirname(dirname(peps)))
+    if stage not in stage_pep_dict.keys():
+        stage_pep_dict[stage] = peps
+
+
+dynamic_mods_aa_dict={79.966331: ['S', 'T', 'Y'], 0.984016: ['N', 'Q']}
+ptm_aa_dict = {'Stage_1': ['S', 'T', 'Y'], 'Stage_2': ['N', 'Q']}
+
+replace_symbol_with_val(df_batch0_q, stage_pep_dict, dynamic_mods_aa_dict)
+make_spectrum_single_jump_f(df_batch0_q)
+
+stage=os.path.basename(dirname(dirname(all_pep_xmls[0])))
+df_0=extract_spectrum_eval_tag(all_pep_xmls[0], stage)
+for pep_file in all_pep_xmls[1:]:
+    stage1=os.path.basename(dirname(dirname(pep_file)))
+    df_1=extract_spectrum_eval_tag(pep_file,stage1)
+    frames = [df_0, df_1]
+    df_0 = pd.concat(frames)
+
+
+quick_row_iterate(df_0)
+
+df_batch0_q["spectrum_stage_key"]=df_batch0_q["spectrum"]+"_"+df_batch0_q["ptm_stage"]
+df_0["spectrum_stage_key"]=df_0["pseudo_spectrum"]+"_"+df_0["stage"]
+df_batch0_q_eval_tag = df_batch0_q.merge(df_0, how="left", on="spectrum_stage_key")
+unique_tag_files = glob.glob(result_folder+"/Stage_*/*/Results*/spectrum_unique_tag_table.txt")
+tag_merge_df = merge_tag_files(unique_tag_files)
+
+select_best_tag(tag_merge_df)
+
+
+req_tag_columns = ["spectrum_stage_key","Top_scored_tag","Best_tag_scores"]
+tag_merge_df_table = tag_merge_df[req_tag_columns]
+
+df_batch0_q_complete = df_batch0_q_eval_tag.merge(tag_merge_df_table, how="left", on = "spectrum_stage_key")
+
+final_publ_cols = ['Peptides_with_ptm_mass','PSM#','no of matched tags','Top_scored_tag', 'Best_tag_scores','expect','Xcorr','Protein Accession #','PTM_types']+channels_cols
+df_batch0_q_final = df_batch0_q_complete[final_publ_cols]
+
+
+rename_cols = {'Peptides_with_ptm_mass':'Peptides','PSM#':'# PSMs','no of matched tags':'# Matched tags',
+               'Top_scored_tag':'Top scored tag','Best_tag_scores':'Best tag scores','expect':'Matching E values','Protein Accession #':'Protein ID','PTM_types':'PTM types'}
+
+
+df_batch0_q_final = df_batch0_q_final.rename(columns=rename_cols)
+# make final table folder
+makedirectory(result_folder+"/results_table")
+df_batch0_q_final.to_excel(result_folder+"/results_table/Pan_PTM_Quan_Table.xlsx",index=None)
 
 
 
