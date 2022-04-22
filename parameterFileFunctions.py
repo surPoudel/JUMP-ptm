@@ -38,6 +38,22 @@ def read_parameter_file(params_file):
 
 
 
+def ptms_info_params(parameters_dict, stage, stage_ptm_dict, dynamic_mods_aa_dict, ptm_aa_dict):
+    working_ptms = parameters_dict["ptm_stage_{}".format(stage)]
+    dyn_mods = parameters_dict["ptm_stage_{}_dyn_mods".format(stage)]
+    aa_residues = parameters_dict["ptm_stage_{}_amino_acids".format(stage)]
+    
+    working_ptms_list = working_ptms.split(";")
+    dyn_mods_list = dyn_mods.split(";")
+    aa_residues_list = aa_residues.split(";")
+
+    for ind,mods in enumerate(dyn_mods_list):
+        dynamic_mods_aa_dict[float(mods)] = list(aa_residues_list[ind])
+    
+    stage_ptm_dict["Stage_"+str(stage)] = ",".join(working_ptms_list)
+    ptm_aa_dict["Stage_"+str(stage)] = dynamic_mods_aa_dict[float(mods)]
+
+
 def storeParamsFile(paramFile):
     cometComments = {}
     dict1 = {}
