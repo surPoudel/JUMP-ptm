@@ -199,6 +199,7 @@ def select_best_tag(df):
         tags_all = tags_all.replace("[","")
         tags_all = tags_all.replace("]","") #replace [and]
         tags_all = tags_all.replace(" ","") #replace whitespace
+        tags_all = tags_all.replace("'","") #replace quotes
         tags_scores = row[mz_cols.index("Tag_scores_list")]
         tags_scores = tags_scores.replace("[","")
         tags_scores = tags_scores.replace("]","")

@@ -255,12 +255,12 @@ write_log (logFile,"    {}".format("\n  ".join(ptms_list)))
 
 scanChargeDf=None
 
-for folders in stages_folder:
-    if "Stage_0" not in folders:
-        stage_wise_search(folders, mzXMLs, comet, logFile, scanChargeDf)
-        rename_pep_xml(mzXMLs, folders)
+# for folders in stages_folder:
+#     if "Stage_0" not in folders:
+#         stage_wise_search(folders, mzXMLs, comet, logFile, scanChargeDf)
+#         rename_pep_xml(mzXMLs, folders)
 
-        run_tag_program(mzXMLs, folders, jump_tag_program, tags_input_path)
+#         run_tag_program(mzXMLs, folders, jump_tag_program, tags_input_path)
 
         # wait_function_after_tag_match(mzXMLs, folders, "tag_qc.params")
 
@@ -292,7 +292,7 @@ for folders in stages_folder:
         write_log (logFile,"  Running jump -f for {}".format(os.getcwd()))
         cmd = "{} {}".format(jump_f_program,out_params)
 
-        os.system(cmd)
+        #os.system(cmd)
 
 ###### Combination of jump -f and perform jump -q on the concatenated results #####
 
@@ -406,7 +406,8 @@ os.system(cmd)
 write_log(logFile,"All ptm stages are successfully searched, filtered, merged and quantified.")
 
 #get the final quantification matrix
-in1 = glob.glob("{}/quan_*/publications/id_uni_pep_quan.txt".format(merge_directory))[0]
+# print (result_folder,"\n",merge_directory)
+in1 = glob.glob("{}/{}/{}/quan_*/publications/id_uni_pep_quan.txt".format(curr_path,result_folder,merge_directory))[0]
 # in1 = "/research_jude/rgs01_jude/groups/penggrp/projects/Alzheimer_BannerSunInstitute/penggrp/proteomics/batch0_pooledSamples/PanPTM_Paper_2021/github_test_6_small_file/Pipeline_Results_jumpptm_simplified/merge_and_consolidation/quan_HH_tmt10_human_comet/publications/id_uni_pep_quan.txt"
 
 
@@ -431,7 +432,9 @@ keep_cols = ['Peptides', 'Peptides_original','Protein Group#', 'Protein Accessio
 df_batch0_q["PTM_types"] = df_batch0_q.ptm_stage.map(stage_ptm_dict)
 #result_folder = dirname(dirname(dirname(dirname(in1))))
 
-all_pep_xmls = glob.glob(result_folder+"/Stage*/*/*.pep.xml")
+
+
+all_pep_xmls = glob.glob("{}/{}/Stage*/*/*.pep.xml".format(curr_path,result_folder))
 stage_pep_dict = {}
 for peps in all_pep_xmls:
     stage = os.path.basename(dirname(dirname(peps)))
@@ -439,8 +442,8 @@ for peps in all_pep_xmls:
         stage_pep_dict[stage] = peps
 
 
-dynamic_mods_aa_dict={79.966331: ['S', 'T', 'Y'], 0.984016: ['N', 'Q']}
-ptm_aa_dict = {'Stage_1': ['S', 'T', 'Y'], 'Stage_2': ['N', 'Q']}
+#dynamic_mods_aa_dict={79.966331: ['S', 'T', 'Y'], 0.984016: ['N', 'Q']}
+#ptm_aa_dict = {'Stage_1': ['S', 'T', 'Y'], 'Stage_2': ['N', 'Q']}
 
 replace_symbol_with_val(df_batch0_q, stage_pep_dict, dynamic_mods_aa_dict)
 make_spectrum_single_jump_f(df_batch0_q)
@@ -459,7 +462,7 @@ quick_row_iterate(df_0)
 df_batch0_q["spectrum_stage_key"]=df_batch0_q["spectrum"]+"_"+df_batch0_q["ptm_stage"]
 df_0["spectrum_stage_key"]=df_0["pseudo_spectrum"]+"_"+df_0["stage"]
 df_batch0_q_eval_tag = df_batch0_q.merge(df_0, how="left", on="spectrum_stage_key")
-unique_tag_files = glob.glob(result_folder+"/Stage_*/*/Results*/spectrum_unique_tag_table.txt")
+unique_tag_files = glob.glob("{}/{}/Stage_*/*/Results*/spectrum_unique_tag_table.txt".format(curr_path,result_folder))
 tag_merge_df = merge_tag_files(unique_tag_files)
 
 select_best_tag(tag_merge_df)
@@ -480,8 +483,8 @@ rename_cols = {'Peptides_with_ptm_mass':'Peptides','PSM#':'# PSMs','no of matche
 
 df_batch0_q_final = df_batch0_q_final.rename(columns=rename_cols)
 # make final table folder
-makedirectory(result_folder+"/results_table")
-df_batch0_q_final.to_excel(result_folder+"/results_table/Pan_PTM_Quan_Table.xlsx",index=None)
+makedirectory("results_table")
+df_batch0_q_final.to_excel("results_table/Pan_PTM_Quan_Table.xlsx",index=None)
 
 
 
