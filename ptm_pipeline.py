@@ -254,16 +254,14 @@ write_log (logFile,"    {}".format("\n  ".join(ptms_list)))
 #print ("Total stages to search = \n{}".format(stages_folder))
 
 scanChargeDf=None
+cluster = allParamsDict["cluster"]
 
-# for folders in stages_folder:
-#     if "Stage_0" not in folders:
-#         stage_wise_search(folders, mzXMLs, comet, logFile, scanChargeDf)
-#         rename_pep_xml(mzXMLs, folders)
-
-#         run_tag_program(mzXMLs, folders, jump_tag_program, tags_input_path)
-
-        # wait_function_after_tag_match(mzXMLs, folders, "tag_qc.params")
-
+for folders in stages_folder:
+    if "Stage_0" not in folders:
+        stage_wise_search(folders, mzXMLs, comet, logFile, cluster, scanChargeDf)
+        rename_pep_xml(mzXMLs, folders)
+        run_tag_program(mzXMLs, folders, jump_tag_program, tags_input_path, cluster)
+   
 
 # #### JUMP -f filter on each stages #####
 
@@ -292,7 +290,7 @@ for folders in stages_folder:
         write_log (logFile,"  Running jump -f for {}".format(os.getcwd()))
         cmd = "{} {}".format(jump_f_program,out_params)
 
-        #os.system(cmd)
+        os.system(cmd)
 
 ###### Combination of jump -f and perform jump -q on the concatenated results #####
 
