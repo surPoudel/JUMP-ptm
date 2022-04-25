@@ -311,41 +311,6 @@ def make_ms2_removed_accepted_psms(scanChargeDf, ms2, new_folder, logFile):
 #scanChargeDf = dataframe generated from function idtxt_exclude_acceptedPSMs(idtxt) uses idtxt as input
 
 
-def stage_wise_search(folders, mzXMLs, comet,logFile, scanChargeDf=None):
-    
-    stage = os.path.basename(folders)  
-    write_log (logFile,"\n\nWorking on the folder structure for {}".format(stage))
-    
-    #input mzXMLs file list
-    for mz_file in mzXMLs:
-        os.chdir(folders)
-        comet_params = glob.glob(folders+"/stage_*_comet.params")[0]
-        
-        basefile = os.path.basename(mz_file)
-        basefile_noext = basefile.split(".")[0]
-        makedirectory(basefile_noext)
-        
-        mzxml_file = mz_file.split(".ms2")[0]+".mzXML"
-
-        #copy mzxml file to the stage folder
-        softlink_mzxml([mz_file], basefile_noext)
-
-        os.chdir(folders+"/"+basefile_noext)
-        cpFile(mz_file, folders+"/"+basefile_noext)
-        cpFile(comet_params, "comet.params")
-        
-        #comet search command
-        job_body1 = "{} -P{} {}".format(comet, "comet.params", "*.ms2 > search_log.txt")
-        #run comet
-        os.system(job_body1)
-        
-        # jobfile = create_job_file("*.ms2", "comet.params", folders, basefile_noext)
-        # submit_job(jobfile,"standard","20G")
-        write_log (logFile,"  Comet search for {} is submitted".format(mz_file))        
-
-
-
-
 def rename_pep_xml(mzXMLs, folders):
     for mz_file in mzXMLs:
         
@@ -422,7 +387,7 @@ def select_max_pep_xml(pepxml_list):
     return max_suffix_pep
 
 
-def run_tag_program(mzXMLs, folders, jump_tag_program, tags_input_path):
+def run_tag_program(mzXMLs, folders, jump_tag_program, tags_input_path, cluster):
     for mz_file in mzXMLs:
         
         basefile = os.path.basename(mz_file)
@@ -442,9 +407,18 @@ def run_tag_program(mzXMLs, folders, jump_tag_program, tags_input_path):
 
         #submit the job to the server now
         # bsub  "jump -q jump_qc_HH_tmt16_human.params"
-        cmd = "{} {}".format(jump_tag_program,"tag_qc.params")
-       
-        os.system(cmd)
+        if cluster == "0":
+            cmd = "{} {}".format(jump_tag_program,"tag_qc.params")
+           
+            os.system(cmd)
+        else:
+            #submit the job to the server now
+            # bsub  "jump -q jump_qc_HH_tmt16_human.params"
+            cmd = 'bsub -P qc_program -R "rusage[mem=10G]" "{} {}"'.format(jump_tag_program,"tag_qc.params")
+            os.system(cmd)
+
+    if cluster == "1":
+        wait_function_after_tag_match(mzXMLs, folders, "tag_qc.params")
 
 def run_tag_program_server(mzXMLs, folders, jump_tag_program, dtasFolder):
     for mz_file in mzXMLs:
@@ -485,7 +459,7 @@ def wait_function_after_tag_match(mzXMLs, folders, tag_qc_params):
         time.sleep(30)
 
 
-def stage_wise_search_server(folders, mzXMLs, comet,logFile, preprocess = None, scanChargeDf=None):
+def stage_wise_search(folders, mzXMLs, comet,logFile,cluster,scanChargeDf=None):
     
     stage = os.path.basename(folders)  
     write_log (logFile,"\n\nWorking on the folder structure for {}".format(stage))
@@ -493,43 +467,33 @@ def stage_wise_search_server(folders, mzXMLs, comet,logFile, preprocess = None, 
     #input mzXMLs file list
     for mz_file in mzXMLs:
         os.chdir(folders)
-        comet_params = glob.glob(folders+"/*.params")[0]
+        comet_params = glob.glob(folders+"/stage_*_comet.params")[0]
         
         basefile = os.path.basename(mz_file)
         basefile_noext = basefile.split(".")[0]
         makedirectory(basefile_noext)
+        
+        mzxml_file = mz_file.split(".ms2")[0]+".mzXML"
+
         #copy mzxml file to the stage folder
         softlink_mzxml([mz_file], basefile_noext)
-        
+
         os.chdir(folders+"/"+basefile_noext)
-        #ms2 files copy and processing
-#         preprocess = dirname(folders)+"/Preprocess"
-        #path for preprocessed ms2 file
-        ms2file = preprocess+"/"+basefile_noext+"/"+basefile_noext+".ms2"
-        
-        #for stage_0 no need to remove accepted PSMs
-        if stage == "Stage_0":
-            cpFile(ms2file, folders+"/"+basefile_noext)
-        else:
-            #remove accepted psms and generate ms2 with remaining scans
-            #generate ms2 file for stage 2 ... removal of accepted scans
-            write_log (logFile,"  ms2 file is being generated removing accepted psms from Stage_0 as the input for Stage_1. This could take time depending on number of fractions")
-            make_ms2_removed_accepted_psms(scanChargeDf, ms2file, folders+"/"+basefile_noext, logFile)
-            
-#         cpFile(ms2file, folders+"/"+basefile_noext)
-#         softlink_mzxml([ms2file], basefile_noext)
-        
-        #copy comet parameter file --- used by jump -f for filtration
+        cpFile(mz_file, folders+"/"+basefile_noext)
         cpFile(comet_params, "comet.params")
         
-        #comet search command
-#         job_body1 = "{} -P{} {}".format(comet, "comet.params", "*.ms2 > search_log.txt")
-#         #run comet
-#         os.system(job_body1)
-        
-        jobfile = create_job_file("*.ms2", "comet.params", folders, basefile_noext, comet)
-        submit_job(jobfile,"standard","20G")
-        write_log (logFile,"  Comet search for {} is submitted".format(ms2file))        
+        if cluster == "0":
+            #comet search command
+            job_body1 = "{} -P{} {}".format(comet, "comet.params", "*.ms2 > search_log.txt")
+            #run comet
+            os.system(job_body1)
+        else:
+            jobfile = create_job_file("*.ms2", "comet.params", folders, basefile_noext, comet)
+            submit_job(jobfile,"standard","20G")
+            write_log (logFile,"  Comet search for {} is submitted".format(mz_file)) 
+    
+    if cluster == "1":
+        wait_Function(1, folders, mzXMLs)
 
 def dta_to_ms2(dtas, new_ms2):
     proton = 1.00727646677
