@@ -329,4 +329,8 @@ additional_qc_file = 0
 #additional_qc_file = /research_jude/rgs01_jude/groups/penggrp/projects/Alzheimer_BannerSunInstitute/penggrp/proteomics/batch0_pooledSamples/PanPTM_Paper_2021/pipeline_applications/cleaning_data/clean_id.txt
 
 
-
+# Other parameters
+# 0 = disable; 1 = enable; using master node only or entire cluster
+cluster = 0
+# LSF used by current cluster; other systems (e.g. SGE & PBS) may be used with minor tweak in source code
+Job_Management_System = LSF
