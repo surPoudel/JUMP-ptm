@@ -107,6 +107,7 @@ if platform.system() == "Linux":
 if platform.system() == "Darwin":
     comet = "{}/comet_mac_2021".format(source_path)
 
+
 database_name = allParamsDict["database_name"]
 pitfile = allParamsDict["pitfile"]
 
@@ -260,11 +261,11 @@ write_log (logFile,"    {}".format("\n  ".join(ptms_list)))
 scanChargeDf=None
 cluster = allParamsDict["cluster"]
 
-#for folders in stages_folder:
- #   if "Stage_0" not in folders:
-        #stage_wise_search(folders, mzXMLs, comet, logFile, cluster, scanChargeDf)
-        #rename_pep_xml(mzXMLs, folders)
-        #run_tag_program(mzXMLs, folders, jump_tag_program, tags_input_path, cluster)
+for folders in stages_folder:
+   if "Stage_0" not in folders:
+        stage_wise_search(folders, mzXMLs, comet, logFile, cluster, scanChargeDf)
+        rename_pep_xml(mzXMLs, folders)
+        run_tag_program(mzXMLs, folders, jump_tag_program, tags_input_path, cluster)
    
 
 # #### JUMP -f filter on each stages #####
