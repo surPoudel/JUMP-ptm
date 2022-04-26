@@ -485,6 +485,7 @@ rename_cols = {'Peptides_with_ptm_mass':'Peptides','PSM#':'# PSMs','no of matche
 
 
 df_batch0_q_final = df_batch0_q_final.rename(columns=rename_cols)
+df_batch0_q_final.drop_duplicates(inplace=True)
 # make final table folder
 makedirectory("results_table")
 df_batch0_q_final.to_excel("results_table/Pan_PTM_Quan_Table.xlsx",index=None)
