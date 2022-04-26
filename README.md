@@ -23,6 +23,56 @@ Note that JUMPptm only supports 64-bit macOS and Linux.
 
 ----
 
+## Basic installation ##
+A basic install is sufficient for multicore laptops, desktops,
+workstations and servers.  For a basic install, use the `bootstrap.sh`
+script provided in the repo.  Then, 
+
+1. Place the JUMPptm distribution source in the desired location (call
+this `<path to JUMPptm>`)
+2. Change your working directory to the top level of the JUMPptm install
+and run ` bash bootstrap.sh`
+
+----
+
+  * Obtaining JUMPptm source 
+You can obtain the latest version of JUMP from git; simple clone the
+git repository:
+
+```
+    git clone https://github.com/surPoudel/JUMP-ptm.git
+```
+
+in the directory _where you would like JUMPptm to be installed_ (call this directory `<path to JUMPptm>`).  Note
+that JUMPptm does not support out-of-place installs; the JUMPptm git
+repository _is_ the entire installation.  
+
+----
+
+  * Bootstrapping 
+To get dependencies installed, we recommend Conda, and we have
+provided a bootstrapping script `bootstrap.sh` that downloads all
+dependencies and installs them alongside JUMPptm.  Execute
+
+```
+    ./bootstrap.sh
+```
+
+and it will create a new directory `JUMPptm` in the current working
+directory.  The directory `JUMPptm` will contain the conda
+environment to be used by JUMPptm.  JUMPptm will be set up to use the PERL
+and python interpreters in that environment.
+
+Once `bootstrap.sh` is finished, activate the conda environment
+
+`conda activate $PWD/JUMPptm`
+
+*You may use existing installations of PERL, python and R for JUMP,
+ but this is not recommended.  PERL 6 is not supported.*
+
+----
+
+----
 ## JUMPptm Publication:
   * The manuscript is submitted and this part will be updated later.
   * If you use JUMPptm as part of a publication, please include this reference.
