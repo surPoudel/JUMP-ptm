@@ -1,7 +1,7 @@
 # JUMPptm #
 
  * [Introduction](#introduction)
- * [Minimum Requirements](#minimum-requirements)
+ * [Basic installation](#basic-installation)
  * [Input Data](#input-data)
  * [Sample Data](#sample-data)
  * [Output Data](#output-data)
@@ -65,7 +65,10 @@ and python interpreters in that environment.
 
 Once `bootstrap.sh` is finished, activate the conda environment
 
-`conda activate $PWD/JUMPptm`
+
+```
+    conda activate $PWD/JUMPptm
+```
 
 *You may use existing installations of PERL, python and R for JUMP,
  but this is not recommended.  PERL 6 is not supported.*
@@ -82,7 +85,7 @@ Once `bootstrap.sh` is finished, activate the conda environment
 ## Input Data ##
 
 JUMPptm requires different input for analyzing the PTMs :
- - ms2 files - High Quality spectra  
+ - ms2 files - Ideally High Quality spectra; however ms2 file containing all spectra could be used (lower sensitivity) 
  - PTMs list (may be derived by using open searches or PTMs of interest) -- this can be updated in the parameter file
  - denovo JUMP derived tags file 
  
