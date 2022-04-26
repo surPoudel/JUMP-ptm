@@ -15,7 +15,7 @@ from customDB_gen import *
 from program_signature import program_display
 from postQuantificationFunctions import *
 import subprocess
-
+import platform
 
 from os.path import dirname
 
@@ -101,7 +101,11 @@ enable_spectrum_QC = allParamsDict["enable_spectrum_QC"]
 PSM_recoveray_rate = allParamsDict["PSM_recoveray_rate"]
 
 # Comet 2021 version binary file
-comet = "{}/comet_linux_2021".format(source_path)
+if platform.system() == "Linux":
+    comet = "{}/comet_linux_2021".format(source_path)
+
+if platform.system() == "Darwin":
+    comet = "{}/comet_mac_2021".format(source_path)
 
 database_name = allParamsDict["database_name"]
 pitfile = allParamsDict["pitfile"]
