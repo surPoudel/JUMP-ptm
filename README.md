@@ -119,16 +119,16 @@ Once the conda environment (JUMPptm) is activated
 
 ## Input and Output Data Organization ##
 .
-├── Pipeline_Results_OUTPUT_FOLDER          
-│   ├── comet.params.new          
-│   ├── ptm_pipeline.log          
-│   ├── ptm_pipeline.params       
-│   ├── merge_and_consolidation   
-│   │   ├── ID.txt      
-│   │   ├── jump_fq_merged.params         
-│   │   ├── publications                  
-│   │   │   ├── id_all_pep.txt  
-│   │   │   └── id_uni_pep.txt  
+|-- Pipeline_Results_OUTPUT_FOLDER          
+│   |-- comet.params.new          
+│   |-- ptm_pipeline.log          
+│   |-- ptm_pipeline.params       
+│   |-- merge_and_consolidation   
+│   │   |-- ID.txt      
+│   │   |-- jump_fq_merged.params         
+│   │   |-- publications                  
+│   │   │   |-- id_all_pep.txt  
+│   │   │   |-- id_uni_pep.txt  
 │   │   ├── quan_HH_tmt10_human_comet     
 │   │   │   └── publications    
 │   │   │       ├── id_all_pep_quan.txt    
