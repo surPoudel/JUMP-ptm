@@ -186,7 +186,7 @@ Once the conda environment (JUMPptm) is activated
 ```
 **Pan_PTM_Quan_Table.xlsx** --- concentanated Pan PTM output file
 
-NOTE: The ID.txt file in merge_and_consolidation folder is modified for the sake of concatenation of different stages. The peptides have Z alphabet appended at the Cterminus that designates the stage. Z = Stage_1; ZZ = Stage_2 etc. The original peptide sequence is also retained. This helps in accurate quantification of peptides using the psms that belongs to specfic stage (so we get stagewise unique psms)
+NOTE: The ID.txt file in merge_and_consolidation folder is modified for the sake of concatenation of different stages. The peptides have Z alphabet appended at the Cterminus that designates the stage. Z = Stage_1; ZZ = Stage_2 etc. The original peptide sequence is also retained. This helps in accurate quantification of peptides using the psms that belongs to specfic stage (so we get unique stagewise psms)
 
 
 ----
