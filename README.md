@@ -5,6 +5,7 @@
  * [Sample Data](#sample-data)
  * [Basic Installation](#basic-installation)
  * [JUMPptm Commands](#jumpptm-commands)
+ * [Test Data Exercise](#test-data-exercise)
  * [Input and Output Data Organization ](#input-and-output-data-organization)
 
 ---
@@ -114,8 +115,25 @@ Once the conda environment (JUMPptm) is activated
 ```
     python /path of JUMPptm/ptm_pipeline.py ptm_pipeline.params
 ```
-** Run JUMPptm through Sample Data**
+----
 
+## Test Data Exercise ##
+
+1. Make a directory called **Test**
+2. Copy w001.ms2 and w001.tags files from [sample_data](./sample_data) to **Test**
+3. Copy ptm_pipeline.params from [parameterFiles](./parameterFiles) to **Test**
+4. Open the paramete file copied from step # 3 and change the following information
+    * ms2_input_path = replace the path with the folder that has sample_data for eg. /home/spoudel1/JUMP-ptm/sample_data
+    * tags_input_path = replace the path with the folder that has sample_data for eg. /home/spoudel1/JUMP-ptm/sample_data
+    * database_name = replace the path with the folder that has the sample database name for eg. /home/spoudel1/JUMP-ptm/resources/database/custom_filtered_Proteins.fasta
+    * pitfile = replace the path with the folder that has the sample pitfile name for eg. /home/spoudel1/JUMP-ptm/resources/database/humanComprehensive_v1_ft_mc2_c57_TMT_K229.pit
+
+5. Execute
+```
+    python /path of JUMPptm/ptm_pipeline.py ptm_pipeline.params
+```
+Note: This will automatically run Stage_1 and Stage_2 (Phosphorylation and Deamidation)
+ 
 ----
 
 ## Input and Output Data Organization ##
