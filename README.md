@@ -195,5 +195,5 @@ Maintainers
 
 * To submit bug reports and feature suggestions, please contact
 
-  **Suresh Poudel(suresh.poudel@stjude.org)**
+  **Suresh Poudel (suresh.poudel@stjude.org)**
 
