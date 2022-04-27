@@ -1,9 +1,9 @@
 # JUMPptm #
 
  * [Introduction](#introduction)
- * [Basic Installation](#basic-installation)
  * [Input Data](#input-data)
  * [Sample Data](#sample-data)
+ * [Basic Installation](#basic-installation)
  * [JUMPptm Commands](#jumpptm-commands)
  * [Input and Output Data Organization ](#input-and-output-data-organization)
 
