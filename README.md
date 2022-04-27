@@ -5,7 +5,7 @@
  * [Input Data](#input-data)
  * [Sample Data](#sample-data)
  * [JUMPptm Commands](#jumpptm-commands)
- * [Output Data](#output-data)
+ * [Input and Output Data Organization ](#input-and-output-data-organization)
 
 ---
 
@@ -109,10 +109,76 @@ Once the conda environment (JUMPptm) is activated
 2. keep all the ms2 files and tags file in the same directory
 3. copy the parameter file (ptm_pipeline.params) from [parameterFiles](./parameterFiles) to the same directory
 4. make necessary changes for the parameters (including PTM searches stages)
+5. Run the command below
 
 ```
     python /path of JUMPptm/ptm_pipeline.py ptm_pipeline.params
 ```
 
-
 ----
+
+## Input and Output Data Organization ##
+
+.
+├── Pipeline_Results_OUTPUT_FOLDER          # Output folder that contains pipeline results (suffixed by Pipeline_Results_)
+│   ├── comet.params.new          # comet search parameter file (template)
+│   ├── ptm_pipeline.log          # ptm pipeline log file
+│   ├── ptm_pipeline.params       # ptm pipeline parameter file is copied inside the results folder for record
+│   ├── merge_and_consolidation   # Folder that have results after merging and consolidation of PSMS from each stages 
+│   │   ├── ID.txt      # merged IDs from all stages
+│   │   ├── jump_fq_merged.params         # automatically generated quantification parameter file
+│   │   ├── publications                  # merged filtering results for peptide identification
+│   │   │   ├── id_all_pep.txt  # merged peptides identification (all proteins)
+│   │   │   └── id_uni_pep.txt  # merged peptides identification (unique proteins)
+│   │   ├── quan_HH_tmt10_human_comet     # quantification results folder
+│   │   │   └── publications    # folder containing quantification of peptides
+│   │   │       ├── id_all_pep_quan.txt    # peptides mapped to all proteins
+│   │   │       └── id_uni_pep_quan.txt    # peptides mapped to unique protein
+│   │   └── results_table
+│   │       └── Pan_PTM_Quan_Table.xlsx   # Pan PTM output excel file
+│   ├── Stage_1                                     # Stage_1 search results based on parameter file description
+│   │   ├── jump_fc_Stage_1_FDR_1.params  # filtering parameter file for stage 1
+│   │   ├── stage_1_comet.params          # search comet parameter file (customized automatically by program based on parameter file)
+│   │   ├── sum_Stage_1_FDR_1             # filtering result folder
+│   │   │   ├── ID.txt          # identified PSMS (Target only) -- at given FDR 
+│   │   │   ├── IDwDecoy.txt    # identified PSMS (Target + Decoy) -- at ven FDR
+│   │   │   ├── publications    # folder containing tables file for unique peptide and all peptides
+│   │   │   │   ├── id_all_pep_1FDR.txt
+│   │   │   │   ├── id_all_pep.txt
+│   │   │   │   ├── id_all_prot_1FDR.txt
+│   │   │   │   ├── id_all_prot.txt
+│   │   │   │   ├── id_uni_pep_1FDR.txt
+│   │   │   │   ├── id_uni_pep.txt
+│   │   │   │   ├── id_uni_prot_1FDR.txt
+│   │   │   │   └── id_uni_prot.txt
+│   │   │   └── simplified_report
+│   │   │       └── id_uni_prot.txt
+│   │   └── w001                         # example fraction name searched by the pipeline --  program makes separate folder for each fraction
+│   │       ├── comet.params             # search parameter file is copied
+│   │       ├── Results_start_scan_0_end_scan_0_min_tag_len_2        # folder containing tags matched intermediate files
+│   │       │   ├── expect_minusLog10.pdf
+│   │       │   ├── expect_minusLog10.png
+│   │       │   ├── spectrum_tag_count.txt
+│   │       │   ├── spectrum_unique_tag_table.txt
+│   │       │   ├── tag_qc.params
+│   │       │   ├── Total_Tag_matched.pdf
+│   │       │   ├── Total_Tag_matched.png
+│   │       │   ├── w001_reordered_final.pickle
+│   │       │   ├── xcorr.pdf
+│   │       │   └── xcorr.png
+│   │       ├── search_log.txt          # comet search log
+│   │       ├── tag_match.log           # tag match program log file
+│   │       ├── tag_qc.params           # tag match parameter file
+│   │       ├── w001.1.pep.xml          # pep.xml file output with tag match information
+│   │       ├── w001.1.txt              # search file in txt file format
+│   │       └── w001.ms2 -> /home/spoudel1/conda_work/test/w001.ms2        # input ms2 softlinked to search fraction folder
+│   └── Stage_2
+│              .
+│              .
+│              .
+│              .
+│
+├── ptm_pipeline.params
+├── w001.1.tags                                             # input tag file
+└── w001.ms2                                                # input ms2 file
+
