@@ -193,8 +193,9 @@ NOTE: The ID.txt file in merge_and_consolidation folder is modified for the sake
 Maintainers
 ----
 
-* To submit bug reports and feature suggestions, please contact:
-    Suresh Poudel 
+* To submit bug reports and feature suggestions, please contact
+
+Suresh Poudel 
 ```
-    suresh.poudel@stjude.org
+suresh.poudel@stjude.org
 ```
