@@ -119,20 +119,20 @@ Once the conda environment (JUMPptm) is activated
 
 ## Input and Output Data Organization ##
 .
-├── Pipeline_Results_OUTPUT_FOLDER          # Output folder that contains pipeline results (suffixed by Pipeline_Results_)
-│   ├── comet.params.new          # comet search parameter file (template)
-│   ├── ptm_pipeline.log          # ptm pipeline log file
-│   ├── ptm_pipeline.params       # ptm pipeline parameter file is copied inside the results folder for record
-│   ├── merge_and_consolidation   # Folder that have results after merging and consolidation of PSMS from each stages 
-│   │   ├── ID.txt      # merged IDs from all stages
-│   │   ├── jump_fq_merged.params         # automatically generated quantification parameter file
-│   │   ├── publications                  # merged filtering results for peptide identification
-│   │   │   ├── id_all_pep.txt  # merged peptides identification (all proteins)
-│   │   │   └── id_uni_pep.txt  # merged peptides identification (unique proteins)
-│   │   ├── quan_HH_tmt10_human_comet     # quantification results folder
-│   │   │   └── publications    # folder containing quantification of peptides
-│   │   │       ├── id_all_pep_quan.txt    # peptides mapped to all proteins
-│   │   │       └── id_uni_pep_quan.txt    # peptides mapped to unique protein
+├── Pipeline_Results_OUTPUT_FOLDER          
+│   ├── comet.params.new          
+│   ├── ptm_pipeline.log          
+│   ├── ptm_pipeline.params       
+│   ├── merge_and_consolidation   
+│   │   ├── ID.txt      
+│   │   ├── jump_fq_merged.params         
+│   │   ├── publications                  
+│   │   │   ├── id_all_pep.txt  
+│   │   │   └── id_uni_pep.txt  
+│   │   ├── quan_HH_tmt10_human_comet     
+│   │   │   └── publications    
+│   │   │       ├── id_all_pep_quan.txt    
+│   │   │       └── id_uni_pep_quan.txt    
 │   │   └── results_table
 │   │       └── Pan_PTM_Quan_Table.xlsx   # Pan PTM output excel file
 │   ├── Stage_1                                     # Stage_1 search results based on parameter file description
