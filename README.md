@@ -188,4 +188,13 @@ Once the conda environment (JUMPptm) is activated
 
 NOTE: The ID.txt file in merge_and_consolidation folder is modified for the sake of concatenation of different stages. The peptides have Z alphabet appended at the Cterminus that designates the stage. Z = Stage_1; ZZ = Stage_2 etc. The original peptide sequence is also retained. This helps in accurate quantification of peptides using the psms that belongs to specfic stage (so we get stagewise unique psms)
 
+
 ----
+Maintainers
+----
+
+* To submit bug reports and feature suggestions, please contact:
+
+```
+    Suresh Poudel (suresh.poudel@stjude.org)
+```
