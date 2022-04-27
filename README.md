@@ -114,6 +114,7 @@ Once the conda environment (JUMPptm) is activated
 ```
     python /path of JUMPptm/ptm_pipeline.py ptm_pipeline.params
 ```
+** Run JUMPptm through Sample Data**
 
 ----
 
