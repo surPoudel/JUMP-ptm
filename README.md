@@ -1,9 +1,9 @@
 # JUMPptm #
 
  * [Introduction](#introduction)
- * [Basic Installation](#basic-installation)
  * [Input Data](#input-data)
  * [Sample Data](#sample-data)
+ * [Basic Installation](#basic-installation)
  * [JUMPptm Commands](#jumpptm-commands)
  * [Input and Output Data Organization ](#input-and-output-data-organization)
 
@@ -98,7 +98,7 @@ Once `bootstrap.sh` is finished, activate the conda environment
 ```
     conda activate $PWD/JUMPptm
 ```
-
+Note: Comet version 2021 binaries are added here [[1]](#1). If user wants different version of Comet. They could simply replace with exact name comet_linux_2021 or comet_mac_2021 
 
 ----
 
@@ -119,6 +119,7 @@ Once the conda environment (JUMPptm) is activated
 
 ## Input and Output Data Organization ##
 
+```bash
 .
 ├── Pipeline_Results_OUTPUT_FOLDER          # Output folder that contains pipeline results (suffixed by Pipeline_Results_)
 │   ├── comet.params.new          # comet search parameter file (template)
@@ -135,7 +136,7 @@ Once the conda environment (JUMPptm) is activated
 │   │   │       ├── id_all_pep_quan.txt    # peptides mapped to all proteins
 │   │   │       └── id_uni_pep_quan.txt    # peptides mapped to unique protein
 │   │   └── results_table
-│   │       └── Pan_PTM_Quan_Table.xlsx   # Pan PTM output excel file
+│   │       └── Pan_PTM_Quan_Table.xlsx  # Pan PTM output excel file
 │   ├── Stage_1                                     # Stage_1 search results based on parameter file description
 │   │   ├── jump_fc_Stage_1_FDR_1.params  # filtering parameter file for stage 1
 │   │   ├── stage_1_comet.params          # search comet parameter file (customized automatically by program based on parameter file)
@@ -178,7 +179,26 @@ Once the conda environment (JUMPptm) is activated
 │              .
 │              .
 │
-├── ptm_pipeline.params
+├── ptm_pipeline.params                                     # input parameter file
 ├── w001.1.tags                                             # input tag file
 └── w001.ms2                                                # input ms2 file
 
+```
+**Pan_PTM_Quan_Table.xlsx** --- concentanated Pan PTM output file
+
+NOTE: The ID.txt file in merge_and_consolidation folder is modified for the sake of concatenation of different stages. The peptides have Z alphabet appended at the Cterminus that designates the stage. Z = Stage_1; ZZ = Stage_2 etc. The original peptide sequence is also retained. This helps in accurate quantification of peptides using the psms that belongs to specfic stage (so we get unique stagewise psms)
+
+
+----
+
+## References
+<a id="1">[1]</a> 
+Eng, Jimmy K., Tahmina A. Jahan, and Michael R. Hoopmann. "Comet: an open‐source MS/MS sequence database search tool." Proteomics 13.1 (2013): 22-24.
+
+----
+Maintainers
+----
+
+* To submit bug reports and feature suggestions, please contact
+
+  **Suresh Poudel (suresh.poudel@stjude.org)**

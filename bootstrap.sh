@@ -1,5 +1,5 @@
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        conda env create --prefix ./JUMPptm -f $PWD/jump_ptm.yml
+        conda env create --prefix ./JUMPptm -f $PWD/jump_ptm_linux.yml
 elif [[ "$OSTYPE" == "darwin"* ]]; then
         conda env create --prefix ./JUMPptm -f $PWD/jump_ptm_mac.yml
 fi
