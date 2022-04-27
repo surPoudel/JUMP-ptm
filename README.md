@@ -98,7 +98,7 @@ Once `bootstrap.sh` is finished, activate the conda environment
 ```
     conda activate $PWD/JUMPptm
 ```
-
+Note: Comet version 2021 binaries are added here [[1]](#1). If user wants different version of Comet. They could simply replace with exact name comet_linux_2021 or comet_mac_2021 
 
 ----
 
