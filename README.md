@@ -136,7 +136,7 @@ Once the conda environment (JUMPptm) is activated
 │   │   │       ├── id_all_pep_quan.txt    # peptides mapped to all proteins
 │   │   │       └── id_uni_pep_quan.txt    # peptides mapped to unique protein
 │   │   └── results_table
-│   │       └── Pan_PTM_Quan_Table.xlsx   # Pan PTM output excel file
+│   │       └── # Pan_PTM_Quan_Table.xlsx #   # Pan PTM output excel file
 │   ├── Stage_1                                     # Stage_1 search results based on parameter file description
 │   │   ├── jump_fc_Stage_1_FDR_1.params  # filtering parameter file for stage 1
 │   │   ├── stage_1_comet.params          # search comet parameter file (customized automatically by program based on parameter file)
