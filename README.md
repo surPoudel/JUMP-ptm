@@ -190,10 +190,17 @@ NOTE: The ID.txt file in merge_and_consolidation folder is modified for the sake
 
 
 ----
+
+## References
+<a id="1">[1]</a> 
+Eng, Jimmy K., Tahmina A. Jahan, and Michael R. Hoopmann. 
+"Comet: an open‐source MS/MS sequence database search tool." 
+Proteomics 13.1 (2013): 22-24.
+
+----
 Maintainers
 ----
 
 * To submit bug reports and feature suggestions, please contact
 
   **Suresh Poudel (suresh.poudel@stjude.org)**
-
