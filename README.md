@@ -107,6 +107,12 @@ Once `bootstrap.sh` is finished, activate the conda environment
 Once the conda environment (JUMPptm) is activated
 1. make a working directory
 2. keep all the ms2 files and tags file in the same directory
-3. copy the parameter file from [parameterFiles](./parameterFiles)
+3. copy the parameter file (ptm_pipeline.params) from [parameterFiles](./parameterFiles) to the same directory
+4. make necessary changes for the parameters (including PTM searches stages)
+
+```
+    python /path of JUMPptm/ptm_pipeline.py ptm_pipeline.params
+```
+
 
 ----
