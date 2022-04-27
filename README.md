@@ -118,7 +118,6 @@ Once the conda environment (JUMPptm) is activated
 ----
 
 ## Input and Output Data Organization ##
-
 .
 ├── Pipeline_Results_OUTPUT_FOLDER          # Output folder that contains pipeline results (suffixed by Pipeline_Results_)
 │   ├── comet.params.new          # comet search parameter file (template)
@@ -181,4 +180,3 @@ Once the conda environment (JUMPptm) is activated
 ├── ptm_pipeline.params
 ├── w001.1.tags                                             # input tag file
 └── w001.ms2                                                # input ms2 file
-
