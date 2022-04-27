@@ -23,7 +23,7 @@ tags_input_path = /home/spoudel1/conda_work/test
 database_name = resources/database/custom_filtered_Proteins.fasta
 
 #pitfile for unique protein inference. This is required to run the filteration program after search
-pitfile = resources/database/human_ft_mc2_c57_TMT_K229.pit
+pitfile = resources/database/humanComprehensive_v1_ft_mc2_c57_TMT_K229.pit
 
 ######## Output ############################
 #Output folder is always in Pipeline_Results. You could add suffix that will be connected by _ for example if ptm_output_folder_suffix = withQC; output folder will be Pipeline_Results_withQC
