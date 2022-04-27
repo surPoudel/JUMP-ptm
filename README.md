@@ -132,6 +132,7 @@ Once the conda environment (JUMPptm) is activated
 ```
     python /path of JUMPptm/ptm_pipeline.py ptm_pipeline.params
 eg. python /home/spoudel/JUMP-ptm/ptm_pipeline.py ptm_pipeline.params
+
 ```
 Note: This will automatically run Stage_1 and Stage_2 (Phosphorylation and Deamidation)
  
