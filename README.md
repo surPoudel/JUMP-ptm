@@ -19,15 +19,14 @@ NOTE : Please use *ptm_pipeline2.py* script to run the entire pipeline for the s
 
 Note that JUMPptm only supports 64-bit macOS and Linux.
 
-
-
 [Top of page](#JUMPptm)
-
 
 ----
 ## JUMPptm Publication:
   * The manuscript is submitted and this part will be updated later.
   * If you use JUMPptm as part of a publication, please include this reference.
+
+[Top of page](#JUMPptm)
 
 ---
 
@@ -101,6 +100,8 @@ Once `bootstrap.sh` is finished, activate the conda environment
 ```
 Note: Comet version 2021 binaries are added here [[1]](#1). If user wants different version of Comet. They could simply replace with exact name comet_linux_2021 or comet_mac_2021 
 
+[Top of page](#JUMPptm)
+
 ----
 
 ## JUMPptm Commands ##
@@ -115,6 +116,8 @@ Once the conda environment (JUMPptm) is activated
 ```
     python /path of JUMPptm/ptm_pipeline.py ptm_pipeline.params
 ```
+[Top of page](#JUMPptm)
+
 ----
 
 ## Test Data Exercise ##
@@ -134,7 +137,9 @@ Once the conda environment (JUMPptm) is activated
 eg. python /home/spoudel/JUMP-ptm/ptm_pipeline.py ptm_pipeline.params
 ```
 Note: This will automatically run Stage_1 and Stage_2 (Phosphorylation and Deamidation)
- 
+
+[Top of page](#JUMPptm)
+
 ----
 
 ## Input and Output Data Organization ##
@@ -208,12 +213,15 @@ Note: This will automatically run Stage_1 and Stage_2 (Phosphorylation and Deami
 
 NOTE: The ID.txt file in merge_and_consolidation folder is modified for the sake of concatenation of different stages. The peptides have Z alphabet appended at the Cterminus that designates the stage. Z = Stage_1; ZZ = Stage_2 etc. The original peptide sequence is also retained. This helps in accurate quantification of peptides using the psms that belongs to specfic stage (so we get unique stagewise psms)
 
+[Top of page](#JUMPptm)
 
 ----
 
 ## References
 <a id="1">[1]</a> 
 Eng, Jimmy K., Tahmina A. Jahan, and Michael R. Hoopmann. "Comet: an open‐source MS/MS sequence database search tool." Proteomics 13.1 (2013): 22-24.
+
+[Top of page](#JUMPptm)
 
 ----
 Maintainers
@@ -222,3 +230,8 @@ Maintainers
 * To submit bug reports and feature suggestions, please contact
 
   **Suresh Poudel (suresh.poudel@stjude.org)**
+
+[Top of page](#JUMPptm)
+
+----
+
