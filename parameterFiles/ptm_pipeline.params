@@ -10,25 +10,25 @@ TMT_data = 1
 
 #complete path of folder containing .ms2 file
 
-ms2_input_path = /research_jude/rgs01_jude/groups/penggrp/projects/Alzheimer_BannerSunInstitute/penggrp/proteomics/batch0_pooledSamples/PanPTM_Paper_2021/github_test_4
+ms2_input_path = /home/spoudel1/conda_work/test
 
 #JUMP - search generated tags; de novo amino acid tags for each MS2 spectrum (.tags format)
 #complete path of folder containing .ms2 file
 
-tags_input_path = /research_jude/rgs01_jude/groups/penggrp/projects/Alzheimer_BannerSunInstitute/penggrp/proteomics/batch0_pooledSamples/PanPTM_Paper_2021/github_test_4
+tags_input_path = /home/spoudel1/conda_work/test
 
 #custom database containing the accepted unique proteins (.fasta format)
 
 #complete path of the fasta file that contains forward and reverse sequence
-database_name = /research_jude/rgs01_jude/groups/penggrp/projects/Alzheimer_BannerSunInstitute/penggrp/proteomics/batch0_pooledSamples/PanPTM_Paper_2021/github_test_4/database/custom_filtered_Proteins.fasta
+database_name = resources/database/custom_filtered_Proteins.fasta
 
-#for the ptm searches, we currently support mzXML files so we need the path that contains mzXML files for each batches
-#we also need a database (.fasta file) for example it could be uniprot human fasta file
+#pitfile for unique protein inference. This is required to run the filteration program after search
+pitfile = resources/database/human_ft_mc2_c57_TMT_K229.pit
 
 ######## Output ############################
 #Output folder is always in Pipeline_Results. You could add suffix that will be connected by _ for example if ptm_output_folder_suffix = withQC; output folder will be Pipeline_Results_withQC
 
-ptm_output_folder_suffix = jumpptm_simplified
+ptm_output_folder_suffix = jumpptm
 
 
 ######## Parameters for PTMs ###############
@@ -263,9 +263,6 @@ add_Z_user_amino_acid = 0.0000         # added to Z - avg.   0.0000, mono.   0.0
 #database_name = /home/yli4/database/MS_proteomics/2017Feb_human_comprehensiveDB/humanComprehensive_v1_ft_mc2_c57_TMT_K229.fasta
 #if pitfile = 0, the program automatically generates pitfile using jump -d in the background
 
-pitfile = /home/spoudel1/PanPTM_Paper_2021/Figure1/TwoStageComet/Ptm_stage_pho_uniprot/uniprotDB/human_ft_mc2_c57_TMT_K229.pit
-
-#pitfile = 0
 #these parameters are only used if pitfile = 0 
 # Prefix for a new database (forward and reverse) (and .pit) file
 output_prefix = human
