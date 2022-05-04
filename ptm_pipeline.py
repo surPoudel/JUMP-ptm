@@ -81,7 +81,7 @@ jump_tag_program = "python {}/JUMPtagmatch/main.py".format(source_path)
 allParamLines, allComments, allParamsDict  = storeParamsFile(params_file)
 
 ms2_path = allParamsDict["ms2_input_path"]
-tags_input_path = allParamsDict["ms2_input_path"]
+tags_input_path = allParamsDict["tags_input_path"]
 
 mzXMLs = glob.glob(ms2_path+"/*.ms2")
 
