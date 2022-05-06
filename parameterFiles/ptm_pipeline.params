@@ -185,7 +185,7 @@ sample_enzyme_number = 1               # Sample enzyme which is possibly differe
 #
 # mzXML parameters
 #
-scan_range = 20000 30000                       # start and end scan range to search; either entry can be set independently
+scan_range = 0 0                       # start and end scan range to search; either entry can be set independently
 precursor_charge = 0 0                 # precursor charge range to analyze; does not override any existing charge; 0 as 1st entry ignores parameter
 override_charge = 0                    # 0=no, 1=override precursor charge states, 2=ignore precursor charges outside precursor_charge range, 3=see online
 ms_level = 2                           # MS level to analyze, valid are levels 2 (default) or 3
