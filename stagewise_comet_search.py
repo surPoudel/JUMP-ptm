@@ -391,7 +391,7 @@ def select_max_pep_xml(pepxml_list):
 
 def run_tag_program(mzXMLs, folders, jump_tag_program, tags_input_path, cluster):
     for mz_file in mzXMLs:
-        
+        os.chdir(folders)
         basefile = os.path.basename(mz_file)
         
         basefile_noext = basefile.split(".")[0]
@@ -424,7 +424,7 @@ def run_tag_program(mzXMLs, folders, jump_tag_program, tags_input_path, cluster)
 
 def run_tag_program_server(mzXMLs, folders, jump_tag_program, dtasFolder):
     for mz_file in mzXMLs:
-        
+        os.chdir(folders)
         basefile = os.path.basename(mz_file)
         
         basefile_noext = basefile.split(".")[0]
