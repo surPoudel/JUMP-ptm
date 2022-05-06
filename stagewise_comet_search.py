@@ -381,9 +381,11 @@ def select_max_pep_xml(pepxml_list):
     for index,peps in enumerate(pepxml_list):
         num_suffix_withbase = peps.split(".pep.xml")[0]
         num_suffix = int(num_suffix_withbase.split(".")[-1])
+        # print ("\n\n{}\n\n".format(num_suffix))
         if num_suffix > max_suffix:
-            max_suffix == num_suffix
+            max_suffix = num_suffix
             max_suffix_pep = peps 
+    # print (max_suffix_pep)
     return max_suffix_pep
 
 
