@@ -134,8 +134,9 @@ Once the conda environment (JUMPptm) is activated
 4. Open the parameter file copied from step # 3 and change the following information
     * ms2_input_path = replace the path with the folder that has sample_data for eg. /home/spoudel1/JUMP-ptm/sample_data
     * tags_input_path = replace the path with the folder that has sample_data for eg. /home/spoudel1/JUMP-ptm/sample_data
-    * database_name = replace the path with the folder that has the sample database name for eg. /home/spoudel1/JUMP-ptm/resources/database/custom_filtered_Proteins.fasta
+    * database_name = replace the path with the folder that has the sample database name for eg. /home/spoudel1/JUMP-ptm/resources/database/custom_filtered_Proteins.fasta 
     * pitfile = replace the path with the folder that has the sample pitfile name for eg. /home/spoudel1/JUMP-ptm/resources/database/humanComprehensive_v1_ft_mc2_c57_TMT_K229.pit
+    * [database_pitfile](https://drive.google.com/drive/folders/1RMV537_0cBQER5BoP3GWRMR9HWC9MwDl?usp=sharing)
 
 5. Execute
 ```
