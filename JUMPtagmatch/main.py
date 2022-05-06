@@ -208,16 +208,19 @@ def my_agg(x):
 
 def total_tags_compute(spectagfile):
     df_tag_spec = pd.read_csv(spectagfile, keep_default_na=False, delimiter="\t")
-    df_tag_spec["tag_len"] = df_tag_spec.apply(lambda x: len(str(x["tag"])), axis=1)
-    df_tag_spec_sorted = df_tag_spec.sort_values(by=["tag_len"], ascending=False)
-    #drop duplicate tags by position
-    df_tag_spec_sortedNR=df_tag_spec_sorted.drop_duplicates(subset=["spectrum","tag_index"], keep="first")    
-    spec_tag_df_cnt=df_tag_spec_sortedNR.groupby('spectrum').apply(my_agg).reset_index()
-    
-    spec_tag_df_cnt.to_csv("spectrum_unique_tag_table.txt", sep="\t", index=None)
-    spectrum_tag_total_dict = dict(zip(spec_tag_df_cnt.spectrum,spec_tag_df_cnt["Total_Tag#"]))
+    if df_tag_spec.shape[0] == 0:
+        return dict()
+    else:
+        df_tag_spec["tag_len"] = df_tag_spec.apply(lambda x: len(str(x["tag"])), axis=1)
+        df_tag_spec_sorted = df_tag_spec.sort_values(by=["tag_len"], ascending=False)
+        #drop duplicate tags by position
+        df_tag_spec_sortedNR=df_tag_spec_sorted.drop_duplicates(subset=["spectrum","tag_index"], keep="first")    
+        spec_tag_df_cnt=df_tag_spec_sortedNR.groupby('spectrum').apply(my_agg).reset_index()
+        
+        spec_tag_df_cnt.to_csv("spectrum_unique_tag_table.txt", sep="\t", index=None)
+        spectrum_tag_total_dict = dict(zip(spec_tag_df_cnt.spectrum,spec_tag_df_cnt["Total_Tag#"]))
 
-    return spectrum_tag_total_dict
+        return spectrum_tag_total_dict
 
 #number of matchd tags len(spectrum_tag_dict[key])
 #key = spectrum+"_"+modifiedpeptide
