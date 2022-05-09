@@ -428,7 +428,7 @@ def run_tag_program_server(mzXMLs, folders, jump_tag_program, dtasFolder):
         basefile = os.path.basename(mz_file)
         
         basefile_noext = basefile.split(".")[0]
-        tag_file = glob.glob(dtasFolder+"/"+basefile_noext+"/*.tags")[0]
+        tag_file = glob.glob(dtasFolder+"/"+basefile_noext+"*.tags")[0]
         
 
         os.chdir(folders+"/"+basefile_noext)
