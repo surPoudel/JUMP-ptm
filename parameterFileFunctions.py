@@ -283,12 +283,13 @@ def generate_QC_param_file(folder, qc_parameter_file, idtxt_list, PSM_recoveray_
     for pepfiles in run_f_pub:
 
         in_string = pepfiles.split(".pep")[0]
-        run = pepfiles.split("/")[-1]
+        run = pepfiles.split("/")[-2]
         # print (run,"\t", all_fractions_search)
-        if run.split(".")[0] in all_fractions_search:
-            suffix =  re.search("(\d+)",run).group(1)
+        if run in all_fractions_search:
+            run_dict[run] = in_string
+#             suffix =  re.search("(\d+)",run).group(1)
 
-            run_dict[int(suffix)] = in_string
+#             run_dict[int(suffix)] = in_string
 
     run_list_sorted = sorted(run_dict.keys())
 
