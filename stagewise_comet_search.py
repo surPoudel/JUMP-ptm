@@ -395,7 +395,7 @@ def run_tag_program(mzXMLs, folders, jump_tag_program, tags_input_path, cluster)
         basefile = os.path.basename(mz_file)
         
         basefile_noext = basefile.split(".")[0]
-        tag_file = glob.glob(tags_input_path+"/*.tags")[0]
+        tag_file = glob.glob(tags_input_path+"/"+basefile_noext+"*.tags")[0]
 
         os.chdir(folders+"/"+basefile_noext)
         #this is renamed pepxml file
@@ -429,6 +429,7 @@ def run_tag_program_server(mzXMLs, folders, jump_tag_program, dtasFolder):
         
         basefile_noext = basefile.split(".")[0]
         tag_file = glob.glob(dtasFolder+"/"+basefile_noext+"/*.tags")[0]
+        
 
         os.chdir(folders+"/"+basefile_noext)
         #this is renamed pepxml file
