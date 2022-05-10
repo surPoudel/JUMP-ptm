@@ -14,6 +14,7 @@ from idtxt_merge_filter import *
 from customDB_gen import *
 from program_signature import program_display
 from postQuantificationFunctions import *
+from id_all_uni_from_id import *
 import subprocess
 import platform
 
@@ -322,15 +323,21 @@ os.chdir(curr_path+"/{}".format(result_folder))
 #make a out_folder for merged jump _f results
 merge_directory = "merge_and_consolidation"
 makedirectory(merge_directory)
+makedirectory(merge_directory+"/publications")
+
+
 
 #merge idtxt_file as Stage_0 jump -f results 
 
+# print ("      Stage 0 idtxt = {}\n\n".format(stage0_idtxt))
 write_log (logFile,"  Concatenating jump -f ID.txt")
 head1,df_idtxt_all = combine_jump_f_stages_modPeptides(all_stage_idtxts, idtxt_file)
 
 
 combine_filter_result = allParamsDict["combine_filter_result"]
 
+
+keep_spectrum = []
 
 if combine_filter_result == "1":
     #we get the list of spectra (stage_spectrum) to be retained based on 
@@ -353,27 +360,12 @@ df_idtxt_all = combine_filter_result_consolidate(df_idtxt_all,keep_spectrum)
 
 write_log (logFile,"  filtering option combine_filter_result = {} applied to prepare ID.txt for jump -q".format(combine_filter_result))
 
-
-write_log (logFile,"  Concatenating jump -f id_uni_pep.txt")
-
-#use stage0_idtxt to find id_uni_pep file and merge from stage0
-df_uni_pep = merge_publication_jump_f_tables(all_stage_id_uni_pep, merge_directory, idtxt_file, keep_spectrum)
-write_log (logFile,"  Concatenating jump -f id_all_pep.txt")
-df_all_pep = merge_publication_jump_f_tables(all_stage_id_all_pep, merge_directory, idtxt_file, keep_spectrum)
-
-#Options for QC after concatenation of jump -f stagewise results: 1: Xcorr based priority (best xcorr scan retains) [DEFAULT], 2: Stage priority (Stage 1 wins over Stage2), 3: Keep all result (no removal)- Chances few scans could have different peptides but identical quantification), 4: Remove all redundant scans
-
-write_log (logFile,"  Concatenation of ID.txt files, id_uni_pep.txt files and id_all_pep.txt files successful. The results are stored in {}".format(os.getcwd()+"/merge_all_stages"))
-
-
-
 #now process this merged idtxt file to generate the ID.txt file in the merged folder
 #save the idtxt file without the header of datbase
 df_idtxt_all.to_csv(merge_directory+"/ID_no_header.txt",sep=";", index=None)
 
 
 ori_clean1 = merge_directory+"/ID_no_header.txt"
-
 
 lines1=[]
 g1=open(ori_clean1,"r")
@@ -384,6 +376,8 @@ with open(merge_directory+"/ID.txt","w") as final1:
     for value1 in lines1:
         final1.write(value1.strip()+"\n")
 
+
+generate_id_uni_all_txt_files(pitfile, df_idtxt_all, merge_directory)
 
 ###### Combination of jump -f and perform jump -q on the concatenated results #####
 
@@ -430,7 +424,7 @@ for x in df_batch0_q.columns:
 
 keep_cols = ['Peptides', 'Peptides_original','Protein Group#', 'Protein Accession #',
        'Protein Description', 'GN', 'PSM#', 'Run#', 'Scan#','m/z', 'z',
-       'Xcorr',  'ptm_stage'] + channels_cols
+       'XCorr',  'ptm_stage'] + channels_cols
 
 df_batch0_q["PTM_types"] = df_batch0_q.ptm_stage.map(stage_ptm_dict)
 #result_folder = dirname(dirname(dirname(dirname(in1))))
@@ -476,7 +470,7 @@ tag_merge_df_table = tag_merge_df[req_tag_columns]
 
 df_batch0_q_complete = df_batch0_q_eval_tag.merge(tag_merge_df_table, how="left", on = "spectrum_stage_key")
 
-final_publ_cols = ['Peptides_with_ptm_mass','PSM#','no of matched tags','Top_scored_tag', 'Best_tag_scores','expect','Xcorr','Protein Accession #','PTM_types']+channels_cols
+final_publ_cols = ['Peptides_with_ptm_mass','PSM#','no of matched tags','Top_scored_tag', 'Best_tag_scores','expect','XCorr','Protein Accession #','PTM_types']+channels_cols
 df_batch0_q_final = df_batch0_q_complete[final_publ_cols]
 
 
