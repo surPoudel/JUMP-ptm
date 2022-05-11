@@ -105,6 +105,7 @@ def extract_spectrum_eval_tag(pep_xml, stage):
     evalue_list = []
     tag_no_list = []
     stage_list = []
+    mod_peptide = []
     spectrum = ""
 
 
@@ -118,9 +119,17 @@ def extract_spectrum_eval_tag(pep_xml, stage):
 
                 evalue = ""
                 tag_num = ""
+                mod_pep = ""
             if '<search_hit hit_rank="1"' in line:
     #             print (line)
                 while "</search_hit>" not in line:  
+                    #extract modified peptide info
+                    if '<modification_info modified_peptide' in line.strip():
+                        pattern_mod_pep = '<modification_info modified_peptide="(.+)" '
+                        if mod_pep == "":
+                            mod_pep=re.match(pattern_mod_pep, line.strip()).group(1)
+                            mod_peptide.append(mod_pep)
+
                     if '<search_score name="expect"' in line.strip(): #evalue found
                         pattern_eval = '<search_score name="expect" value="(.+)"/>'
                         if evalue == "":
@@ -136,7 +145,8 @@ def extract_spectrum_eval_tag(pep_xml, stage):
 
                     line = f.readline()
     stage_list = len(spectrum_list)*[stage]
-    df = pd.DataFrame({"spectrum":spectrum_list,"expect":evalue_list, "no of matched tags":tag_no_list,"stage":stage_list})
+    df = pd.DataFrame({"spectrum":spectrum_list,"mod_pep":mod_peptide,"expect":evalue_list, "no of matched tags":tag_no_list,"stage":stage_list})
+    df["spectrum__mod_pep"] = df.spectrum+"_"+df.mod_pep
     return df
 
 
@@ -165,13 +175,13 @@ def quick_row_iterate(expDF):
 
 
 def merge_tag_files(tag_match_list): 
-    #w010.10187.1.3_KIEESETIEDSSNQ[129]AAAR	
+    #w010.10187.1.3_KIEESETIEDSSNQ[129]AAAR 
     df = pd.read_csv(tag_match_list[0], delimiter = "\t")
     stage=os.path.basename(dirname(dirname(dirname(tag_match_list[0]))))
     df["stage"] = stage
     df[["spectrum_no_pep","mod_pep"]] = df["spectrum"].str.split("_",expand=True)
     df[["Run#","Scan#","Precursor_rank","z"]] = df["spectrum_no_pep"].str.split(".",expand=True)
-    df["spectrum_stage_key"]=df["Run#"]+"."+df["Scan#"].astype("str")+"."+df["z"].astype("str")+"_"+df["stage"]
+    df["spectrum_stage_key"]=df["Run#"]+"."+df["Scan#"].astype("str")+"."+df["z"].astype("str")+"__"+df["stage"]
     
    
     
@@ -181,10 +191,11 @@ def merge_tag_files(tag_match_list):
         df_2["stage"] = stage_2
         df_2[["spectrum_no_pep","mod_pep"]] = df_2["spectrum"].str.split("_",expand=True)
         df_2[["Run#","Scan#","Precursor_rank","z"]] = df_2["spectrum_no_pep"].str.split(".",expand=True)
-        df_2["spectrum_stage_key"]=df_2["Run#"]+"."+df_2["Scan#"].astype("str")+"."+df_2["z"].astype("str")+"_"+df_2["stage"]
+        df_2["spectrum_stage_key"]=df_2["Run#"]+"."+df_2["Scan#"].astype("str")+"."+df_2["z"].astype("str")+"__"+df_2["stage"]
     
         frames = [df, df_2]
         df = pd.concat(frames)
+    df.rename(columns = {"spectrum":"spectrum__mod_pep"}, inplace=True) #this is to merge in the evalue tag extracted file with same name key
     return df
 
 

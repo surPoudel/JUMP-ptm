@@ -456,8 +456,8 @@ for pep_file in all_pep_xmls[1:]:
 
 quick_row_iterate(df_0)
 
-df_batch0_q["spectrum_stage_key"]=df_batch0_q["spectrum"]+"_"+df_batch0_q["ptm_stage"]
-df_0["spectrum_stage_key"]=df_0["pseudo_spectrum"]+"_"+df_0["stage"]
+df_batch0_q["spectrum_stage_key"]=df_batch0_q["spectrum"]+"__"+df_batch0_q["ptm_stage"]
+df_0["spectrum_stage_key"]=df_0["pseudo_spectrum"]+"__"+df_0["stage"]
 df_batch0_q_eval_tag = df_batch0_q.merge(df_0, how="left", on="spectrum_stage_key")
 unique_tag_files = glob.glob("{}/{}/Stage_*/*/Results*/spectrum_unique_tag_table.txt".format(curr_path,result_folder))
 tag_merge_df = merge_tag_files(unique_tag_files)
@@ -465,12 +465,18 @@ tag_merge_df = merge_tag_files(unique_tag_files)
 select_best_tag(tag_merge_df)
 
 
-req_tag_columns = ["spectrum_stage_key","Top_scored_tag","Best_tag_scores"]
+req_tag_columns = ["spectrum_stage_key","spectrum__mod_pep","stage","Top_scored_tag","Best_tag_scores"]
 tag_merge_df_table = tag_merge_df[req_tag_columns]
 
-df_batch0_q_complete = df_batch0_q_eval_tag.merge(tag_merge_df_table, how="left", on = "spectrum_stage_key")
+#make final merge key
+df_batch0_q_eval_tag["final_merge_key"] = df_batch0_q_eval_tag["spectrum__mod_pep"]+"__"+df_batch0_q_eval_tag["stage"]
+tag_merge_df_table["final_merge_key"] = tag_merge_df_table["spectrum__mod_pep"]+"__"+tag_merge_df_table["stage"]
 
-final_publ_cols = ['Peptides_with_ptm_mass','PSM#','no of matched tags','Top_scored_tag', 'Best_tag_scores','expect','XCorr','Protein Accession #','PTM_types']+channels_cols
+#df_batch0_q_complete = df_batch0_q_eval_tag.merge(tag_merge_df_table, how="left", on = "spectrum_stage_key")
+df_batch0_q_complete = df_batch0_q_eval_tag.merge(tag_merge_df_table, how="left", on = "final_merge_key")
+
+
+final_publ_cols = ['Peptides_with_ptm_mass','PSM#','no of matched tags','Top_scored_tag', 'Best_tag_scores','expect','XCorr','Protein Accession #','GN','PTM_types']+channels_cols
 df_batch0_q_final = df_batch0_q_complete[final_publ_cols]
 
 
@@ -483,6 +489,5 @@ df_batch0_q_final.drop_duplicates(inplace=True)
 # make final table folder
 makedirectory("results_table")
 df_batch0_q_final.to_excel("results_table/Pan_PTM_Quan_Table.xlsx",index=None)
-
 
 
