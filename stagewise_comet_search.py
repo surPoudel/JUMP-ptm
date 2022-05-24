@@ -457,7 +457,7 @@ def wait_function_after_tag_match(mzXMLs, folders, tag_qc_params):
         cnt = 0
         result = False
 
-        tag_files = glob.glob(folders+"/*/"+tag_qc_params)
+        tag_files = glob.glob(folders+"/*/*/"+tag_qc_params)
         # print (tag_files)
         time.sleep(30)
 
