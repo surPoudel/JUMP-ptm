@@ -45,7 +45,7 @@ Once the conda environment (JUMPptm) is activated
 4. Run the command below
 
 ```
-    python /path of JUMPnl_im/python /mainProgram.py jump_immo_ion_nl_unenrich.params
+    python /path of JUMPnl_im/mainProgram.py jump_immo_ion_nl_unenrich.params
 ```
 [Top of page](#JUMPnl_im)
 
