@@ -40,7 +40,7 @@ JUMPptm installation should suffice all required packages
 
 Once the conda environment (JUMPptm) is activated
 1. make a working directory
-2. copy the parameter file (ptm_pipeline.params) from [parameterFiles](./parameterFiles) to the same directory
+2. copy the parameter file (jump_immo_ion_nl_unenrich.params) from this directory to the same directory
 3. make necessary changes for the parameters (ms2File and idtxt file)
 4. Run the command below
 
