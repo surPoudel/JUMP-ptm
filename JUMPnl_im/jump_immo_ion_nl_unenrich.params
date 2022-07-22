@@ -1,0 +1,51 @@
+[NL]
+
+# input path for presearch ms2 files
+ms2File = /research_jude/rgs01_jude/groups/penggrp/projects/Alzheimer_BannerSunInstitute/penggrp/proteomics/batch0_pooledSamples/PanPTM_Paper_2021/JUMP_presearch/w010/w010.ms2
+
+#this is the input ID.txt file. It can also be input from jump_l program ID.lscore file
+idtxt = /research_jude/rgs01_jude/groups/penggrp/projects/Alzheimer_BannerSunInstitute/penggrp/proteomics/batch0_pooledSamples/PanPTM_Paper_2021/pipeline_applications/Pipeline_Results_additional_qc_105Frac_Final/merge_all_stage_jump_f_jump_q_peptide_peptide_level_FDR/ID.txt
+
+
+#example pep.xml file that was generated from current search strategy. For example, if you used comet to search 100 raw files. Keep the full path of one pep.xml file (you don't need best file, any file will work)
+pepxml = /research_jude/rgs01_jude/groups/penggrp/projects/Alzheimer_BannerSunInstitute/penggrp/proteomics/batch0_pooledSamples/PanPTM_Paper_2021/pipeline_applications/Pipeline_Results_additional_qc_105Frac_Final/Stage_2/w001/w001.1.pep.xml
+
+#JUMP ptm stage information
+# this is not required in pho enriched dataset
+stage = Stage_2
+
+#ptm type .. write full name of ptm as it appears in JUMPptm output excel file
+ptm_type = phosphorylation
+
+# THis is for STY modification symbols jump or comet #need to make it automatic
+search_engine = comet
+
+
+#neutral losses to analyze H2O, NH3, H3PO4. Use neutral_losses = 0 if no neutral loss is being searched neutral_losses=HPO3:79.96633,H3PO4:97.97689,h2o:18.01056,nh3:17.026549
+#
+#neutral_losses = HPO3:79.96633,H3PO4:97.97689,h2o:18.01056,nh3:17.026549
+neutral_losses = HPO3:79.96633,H3PO4:97.97689
+
+#
+#Use immonium_ions = 0 if no immonium ion is being searched immonium_ions = phosphotyrosine:216.0426,acetyllysine:143.1179,acetyllysine_cyc:126.0913
+#
+#immonium_ions = acetyllysine:143.1179,acetyllysine_cyc:126.0913
+immonium_ions = 0
+
+
+#selection of charge for precursor neutral loss: 0 means just select 1 charge state (peptide charge), 1 = select multiple charge stage if precursor charge is +4, +3,+2,+1 will also be considered
+precursor_charge_select_on = 0
+
+
+#tolerance for ms2 matching = fragment ion tolerance
+tol=10
+
+#noise cutoff for example 33% of base intensity
+intensity_cut = 0.10
+#20 percent .. dynamic based on spectrum
+
+#hard cutoff of noise fixed
+fixed_noise = 0
+
+# THere will be new folder inside current folder 
+output_folder = unenriched_pho_tol_10_int_cut_10_noise_0_oneCharge
