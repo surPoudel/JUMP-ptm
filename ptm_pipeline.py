@@ -266,7 +266,10 @@ for folders in stages_folder:
    if "Stage_0" not in folders:
         stage_wise_search(folders, mzXMLs, comet, logFile, cluster, scanChargeDf)
         rename_pep_xml(mzXMLs, folders)
-        run_tag_program(mzXMLs, folders, jump_tag_program, tags_input_path, cluster)
+        if tags_input_path == "0":
+            write_log(logFile,"  Tags file are missing so the JUMPptm will be performed without tag based filtering")
+        else:
+            run_tag_program(mzXMLs, folders, jump_tag_program, tags_input_path, cluster)
    
 
 # #### JUMP -f filter on each stages #####
@@ -446,10 +449,11 @@ replace_symbol_with_val(df_batch0_q, stage_pep_dict, dynamic_mods_aa_dict)
 make_spectrum_single_jump_f(df_batch0_q)
 
 stage=os.path.basename(dirname(dirname(all_pep_xmls[0])))
-df_0=extract_spectrum_eval_tag(all_pep_xmls[0], stage)
+
+df_0=extract_spectrum_eval_tag(all_pep_xmls[0], stage, tags_input_path)
 for pep_file in all_pep_xmls[1:]:
     stage1=os.path.basename(dirname(dirname(pep_file)))
-    df_1=extract_spectrum_eval_tag(pep_file,stage1)
+    df_1=extract_spectrum_eval_tag(pep_file,stage1,tags_input_path)
     frames = [df_0, df_1]
     df_0 = pd.concat(frames)
 
@@ -459,32 +463,45 @@ quick_row_iterate(df_0)
 df_batch0_q["spectrum_stage_key"]=df_batch0_q["spectrum"]+"__"+df_batch0_q["ptm_stage"]
 df_0["spectrum_stage_key"]=df_0["pseudo_spectrum"]+"__"+df_0["stage"]
 df_batch0_q_eval_tag = df_batch0_q.merge(df_0, how="left", on="spectrum_stage_key")
-unique_tag_files = glob.glob("{}/{}/Stage_*/*/Results*/spectrum_unique_tag_table.txt".format(curr_path,result_folder))
-tag_merge_df = merge_tag_files(unique_tag_files)
 
-select_best_tag(tag_merge_df)
-
-
-req_tag_columns = ["spectrum_stage_key","spectrum__mod_pep","stage","Top_scored_tag","Best_tag_scores"]
-tag_merge_df_table = tag_merge_df[req_tag_columns]
-
-#make final merge key
-df_batch0_q_eval_tag["final_merge_key"] = df_batch0_q_eval_tag["spectrum__mod_pep"]+"__"+df_batch0_q_eval_tag["stage"]
-tag_merge_df_table["final_merge_key"] = tag_merge_df_table["spectrum__mod_pep"]+"__"+tag_merge_df_table["stage"]
-
-#df_batch0_q_complete = df_batch0_q_eval_tag.merge(tag_merge_df_table, how="left", on = "spectrum_stage_key")
-df_batch0_q_complete = df_batch0_q_eval_tag.merge(tag_merge_df_table, how="left", on = "final_merge_key")
+if tags_input_path == "0":
+    df_batch0_q_eval_tag["final_merge_key"] = df_batch0_q_eval_tag["spectrum__mod_pep"]+"__"+df_batch0_q_eval_tag["stage"]
+    final_publ_cols = ['Peptides_with_ptm_mass','PSM#','expect','XCorr','Protein Accession #','GN','PTM_types']+channels_cols
+    df_batch0_q_complete = df_batch0_q_eval_tag[final_publ_cols]
+    rename_cols = {'Peptides_with_ptm_mass':'Peptides','PSM#':'# PSMs','expect':'Matching E values','Protein Accession #':'Protein ID','PTM_types':'PTM types'}
 
 
-final_publ_cols = ['Peptides_with_ptm_mass','PSM#','no of matched tags','Top_scored_tag', 'Best_tag_scores','expect','XCorr','Protein Accession #','GN','PTM_types']+channels_cols
-df_batch0_q_final = df_batch0_q_complete[final_publ_cols]
+    df_batch0_q_final = df_batch0_q_complete.rename(columns=rename_cols)
+else:
+
+    unique_tag_files = glob.glob("{}/{}/Stage_*/*/Results*/spectrum_unique_tag_table.txt".format(curr_path,result_folder))
+    tag_merge_df = merge_tag_files(unique_tag_files)
+
+    select_best_tag(tag_merge_df)
 
 
-rename_cols = {'Peptides_with_ptm_mass':'Peptides','PSM#':'# PSMs','no of matched tags':'# Matched tags',
-               'Top_scored_tag':'Top scored tag','Best_tag_scores':'Best tag scores','expect':'Matching E values','Protein Accession #':'Protein ID','PTM_types':'PTM types'}
+    req_tag_columns = ["spectrum_stage_key","spectrum__mod_pep","stage","Top_scored_tag","Best_tag_scores"]
+    tag_merge_df_table = tag_merge_df[req_tag_columns]
+
+    #make final merge key
+    df_batch0_q_eval_tag["final_merge_key"] = df_batch0_q_eval_tag["spectrum__mod_pep"]+"__"+df_batch0_q_eval_tag["stage"]
+    tag_merge_df_table["final_merge_key"] = tag_merge_df_table["spectrum__mod_pep"]+"__"+tag_merge_df_table["stage"]
+
+    #df_batch0_q_complete = df_batch0_q_eval_tag.merge(tag_merge_df_table, how="left", on = "spectrum_stage_key")
+    df_batch0_q_complete = df_batch0_q_eval_tag.merge(tag_merge_df_table, how="left", on = "final_merge_key")
 
 
-df_batch0_q_final = df_batch0_q_final.rename(columns=rename_cols)
+    final_publ_cols = ['Peptides_with_ptm_mass','PSM#','no of matched tags','Top_scored_tag', 'Best_tag_scores','expect','XCorr','Protein Accession #','GN','PTM_types']+channels_cols
+    df_batch0_q_final = df_batch0_q_complete[final_publ_cols]
+
+
+    rename_cols = {'Peptides_with_ptm_mass':'Peptides','PSM#':'# PSMs','no of matched tags':'# Matched tags',
+                   'Top_scored_tag':'Top scored tag','Best_tag_scores':'Best tag scores','expect':'Matching E values','Protein Accession #':'Protein ID','PTM_types':'PTM types'}
+
+
+    df_batch0_q_final = df_batch0_q_final.rename(columns=rename_cols)
+
+
 df_batch0_q_final.drop_duplicates(inplace=True)
 # make final table folder
 makedirectory("results_table")

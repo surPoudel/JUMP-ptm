@@ -14,7 +14,7 @@ ms2_input_path = /home/spoudel1/conda_work/test
 
 #JUMP - search generated tags; de novo amino acid tags for each MS2 spectrum (.tags format)
 #complete path of folder containing .ms2 file
-
+# if HL data is used, we do not generate tags so use tags_input_path = 0
 tags_input_path = /home/spoudel1/conda_work/test
 
 #custom database containing the accepted unique proteins (.fasta format)

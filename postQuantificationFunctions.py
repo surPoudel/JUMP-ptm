@@ -100,7 +100,7 @@ def replace_symbol_with_val(df, stage_pep_dict, dynamic_mods_aa_dict):
     df["Peptides_with_ptm_mass"] = simplied_peptide_list
 
 
-def extract_spectrum_eval_tag(pep_xml, stage):
+def extract_spectrum_eval_tag(pep_xml, stage, tags_input_path):
     spectrum_list = []
     evalue_list = []
     tag_no_list = []
@@ -114,14 +114,14 @@ def extract_spectrum_eval_tag(pep_xml, stage):
             if '<spectrum_query spectrum=' in line.strip(): #spectrum found
                 pattern = '<spectrum_query spectrum="(\w+\.\d+\.\d+\.\d+)"'
                 spectrum=re.match(pattern, line.strip()).group(1)
-                spectrum_list.append(spectrum)
+                
                
 
                 evalue = ""
                 tag_num = ""
                 mod_pep = ""
             if '<search_hit hit_rank="1"' in line:
-    #             print (line)
+                
                 while "</search_hit>" not in line:  
                     #extract modified peptide info
                     if '<modification_info modified_peptide' in line.strip():
@@ -129,7 +129,8 @@ def extract_spectrum_eval_tag(pep_xml, stage):
                         if mod_pep == "":
                             mod_pep=re.match(pattern_mod_pep, line.strip()).group(1)
                             mod_peptide.append(mod_pep)
-
+                            spectrum_list.append(spectrum)
+                            
                     if '<search_score name="expect"' in line.strip(): #evalue found
                         pattern_eval = '<search_score name="expect" value="(.+)"/>'
                         if evalue == "":
@@ -145,7 +146,13 @@ def extract_spectrum_eval_tag(pep_xml, stage):
 
                     line = f.readline()
     stage_list = len(spectrum_list)*[stage]
-    df = pd.DataFrame({"spectrum":spectrum_list,"mod_pep":mod_peptide,"expect":evalue_list, "no of matched tags":tag_no_list,"stage":stage_list})
+    # print (len(spectrum_list), len(mod_peptide), len(evalue_list), len(tag_no_list), len(stage_list))
+
+    if tags_input_path != "0":
+        df = pd.DataFrame({"spectrum":spectrum_list,"mod_pep":mod_peptide,"expect":evalue_list, "no of matched tags":tag_no_list,"stage":stage_list})
+    else:
+        df = pd.DataFrame({"spectrum":spectrum_list,"mod_pep":mod_peptide,"expect":evalue_list, "stage":stage_list})
+    
     df["spectrum__mod_pep"] = df.spectrum+"_"+df.mod_pep
     return df
 
