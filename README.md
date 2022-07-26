@@ -17,7 +17,7 @@ JUMPptm aims to identify PTM events from unmatched spectra after conventional pe
 
 NOTE : Please use *ptm_pipeline2.py* script to run the entire pipeline for the standalone version. Similarly, *ptm_pipeline.py* script run entire pipeline for Platform LSF to schedule jobs on the computational cluster. As the list of PTMs gets larger or number of mzXML files increases, is better to use cluster rather than standalone version. For other platform, users may edit the job submission functions.
 
-Note that JUMPptm only supports 64-bit macOS and Linux.
+Note that JUMPptm only supports 64-bit macOS and Linux. Also, JUMPptm can be run without TAGs file too. You can directly use ms2 file and turn off the tag path in the parameter file
 
 [Top of page](#JUMPptm)
 
