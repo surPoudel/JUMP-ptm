@@ -49,10 +49,14 @@ Once the conda environment (JUMPptm) is activated
 ```
 [Top of page](#JUMPnl_im)
 
+----
+
 ## Output ##
 The output is a pie chart with the distribution of neutral loss or immonium ions. There is also a tab-delimited text file (**fraction name followed by __prec_NL_immIon_output.txt (suffix)** that has neutral loss outcomes for each neutral loss and total neutral loss (represented by 0 for no and 1 for yes). Similarly, for immonium ion also there is separate column with same convention.
 
 ----
+[Top of page](#JUMPnl_im)
+
 Maintainers
 ----
 
