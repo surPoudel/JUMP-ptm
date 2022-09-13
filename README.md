@@ -12,12 +12,12 @@
 
 ## Introduction ##
 
-JUMPptm aims to identify PTM events from unmatched spectra after conventional peptide analysis of the whole proteome. By default, JUMPptm assumes that the whole proteome data has been analyzed by the JUMP suite, which outputs the identification of peptides/proteins, and the high-quality (HQ) unmatched spectra with de novo tags. Such HQ spectra (input #1) are taken as JUMPptm input, and searched against a list of PTMs specified by the user (input #2) using the multi-stage database search strategy using Comet. The PTM list can be guided by the results from an open search using MSFragger. JUMPptm exports the PTM peptide identification with TMT-based quantification.
+JUMPptm aims to identify PTM events from unmatched spectra after conventional peptide analysis of the whole proteome. By default, JUMPptm assumes that the whole proteome data has been analyzed by the JUMP suite, which outputs the identification of peptides/proteins, and the high-quality (HQ) unmatched spectra with de novo tags. Such HQ spectra (input #1) are taken as JUMPptm input, and searched against a list of PTMs specified by the user (input #2) using the multi-stage database search strategy using Comet. The PTM list can be guided by the results from an open search using MSFragger. JUMPptm exports the PTM peptide identification with TMT-based quantification. We can also use mzXML file as the direct input instead of ms2 files.
 
 
-NOTE : Please use *ptm_pipeline2.py* script to run the entire pipeline for the standalone version. Similarly, *ptm_pipeline.py* script run entire pipeline for Platform LSF to schedule jobs on the computational cluster. As the list of PTMs gets larger or number of mzXML files increases, is better to use cluster rather than standalone version. For other platform, users may edit the job submission functions.
+NOTE : *ptm_pipeline.py* script can run entire pipeline for Platform LSF to schedule jobs on the computational cluster or on standalone version (select the correct parameter in the parameter file). As the list of PTMs gets larger or number of mzXML files increases, is better to use cluster rather than standalone version. For other platform, users may edit the job submission functions.
 
-Note that JUMPptm only supports 64-bit macOS and Linux. Also, JUMPptm can be run without TAGs file too. You can directly use ms2 file and turn off the tag path in the parameter file
+Note that JUMPptm only supports 64-bit macOS and Linux. Also, JUMPptm can be run without TAGs file too. You can directly use ms2 file or mzXML file and turn off the tag path in the parameter file
 
 [Top of page](#JUMPptm)
 
@@ -33,7 +33,7 @@ Note that JUMPptm only supports 64-bit macOS and Linux. Also, JUMPptm can be run
 ## Input Data ##
 
 JUMPptm requires different input for analyzing the PTMs :
- - ms2 files - Ideally High Quality spectra; however ms2 file containing all spectra could be used (lower sensitivity) 
+ - ms2 files - Ideally High Quality spectra; however ms2 file or mzXML file containing all spectra could be used (lower sensitivity) 
  - PTMs list (may be derived by using open searches or PTMs of interest) -- this can be updated in the parameter file
  - denovo JUMP derived tags file (you can turn this off in the parameter file by assigning **tags_input_path = 0** if you have do not have TAGS file from JUMP)
  
@@ -114,7 +114,7 @@ Note: Comet version 2021 binaries are added here [[1]](#1). If user wants differ
 
 Once the conda environment (JUMPptm) is activated
 1. make a working directory
-2. keep all the ms2 files and tags file in the same directory
+2. keep all the ms2 files or mzXML files and tags file (optional) in the same directory
 3. copy the parameter file (ptm_pipeline.params) from [parameterFiles](./parameterFiles) to the same directory
 4. make necessary changes for the parameters (including PTM searches stages)
 5. Run the command below
