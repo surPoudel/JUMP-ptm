@@ -45,7 +45,7 @@ def Get_params(jump_params):
 	params['TMT_data'] = int(float(jumpParamsDict['TMT_data']))	# 0 = disable; 1 = enable
 	params['add_Nterm_peptide'] = float(jumpParamsDict['add_Nterm_peptide'])	# TMT modification or other amine labeling (229.1629321 for TMT6-11, 304.2071453 for TMT16)
 	params['output_format'] = int(float(jumpParamsDict['output_format']))	# output file format, 1: ms2, 2: dtas, 3: mgf
-	params['nprocessor'] = int(float(jumpParamsDict['nprocessor']))	# no of multiprocessing nodes
+	params['num_threads'] = int(float(jumpParamsDict['num_threads']))	# no of multiprocessing nodes
 	params['parallel_method'] = int(float(jumpParamsDict['parallel_method'])) # parallel method, 1: multiprocessing package, 2: submitting LSF jobs
 	
 	
@@ -67,8 +67,8 @@ def Get_params(jump_params):
 	#params['nprocessor'] = 4 # no of multiprocessing nodes
 	
 	ncali=1
-	if (params['deisotoping_method']==2 or params['deisotoping_method']==3) and params['output_format']==1:
-		ncali=3
+	# if (params['deisotoping_method']==2 or params['deisotoping_method']==3) and params['output_format']==1:
+	# 	ncali=3
 	params['w_wo_calibration'] = ncali # mass correction, 1: only with calibration, 2: only without calibration, else: both with and without calibration
 	
 	params['target_ms2scan'] = [9046]#18072#24338#	# specify the ms2 scan# to debug if deisotoping_method=4

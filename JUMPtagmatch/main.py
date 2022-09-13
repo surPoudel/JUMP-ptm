@@ -95,7 +95,10 @@ write_log (logFile,"Storing tag information and generating outfile links from co
 #scan tag has jump spectrum linked to tags, jump_comet_link has comet spectrum + MH link to jump tag
 # scan_tag, tag_score_list, jump_comet_link = scan_tag_dictionary(tag_file)
 
-scan_tag, tag_score_list, jump_comet_link = scan_tag_dictionary(tag_file)
+if tag_file == "0":
+    scan_tag, tag_score_list, jump_comet_link = {}, [], {}
+else:
+    scan_tag, tag_score_list, jump_comet_link = scan_tag_dictionary(tag_file)
 
 
 write_log (logFile,"    Tag information stored")
@@ -238,6 +241,7 @@ makePepXML(dfMz_valid, pep_xml,out_tag_pep, spectrum_tag_total_dict, logFile)
 mv_cmd = "mv {} {}".format(out_tag_pep,pep_xml)
 os.system(mv_cmd)
 
+'''
 #weightedEvalue = combination of zscore(Escore = -log10(expect) and tagScore)
 df = qc_target_decoy(dfMz_valid,logFile, "search_hit", "all", "num_matched_tags")
 write_log (logFile,"  The num_matched_tags qc numbers are shown below")
@@ -254,7 +258,7 @@ write_log (logFile,"  The comet xcorr value qc numbers are shown below")
 qc_figures(df, "xcorr", "xcorr")
 
 write_log (logFile,"    Total Targets and Decoys ",df.Type.value_counts())
-
+'''
 
 
 cmd_cp = "cp {}/{} .".format(inpath,params_file)

@@ -70,7 +70,7 @@ jump_f_program = "perl {}/JUMPf/jump_f.pl".format(source_path)
 #tag based filteration
 #jump_f_program = "perl /home/yli4/development/git/Yuxin_jump_git/JUMPf/jump_f.pl"
 # jump_f_program = "perl /hpcf/authorized_apps/proteomics_apps/pipeline/release/version1.13.004/JUMPf/bin/_jump_f.pl"
-#deisotope_program = "python {}/Deisotope/DeisotopeMS1.py".format(source_path)
+deisotope_program = "python {}/presearch/DeisotopeMS1.py".format(source_path)
 jump_f_params = "{}/parameterFiles/jump_fc_HH_tmt10_human.params".format(source_path)
 jump_q_program = "python {}/JUMPq/jump_q.py".format(source_path)
 jump_q_params = "{}/parameterFiles/jump_qc_HH_tmt10_human.params".format(source_path)
@@ -84,8 +84,19 @@ allParamLines, allComments, allParamsDict  = storeParamsFile(params_file)
 ms2_path = allParamsDict["ms2_input_path"]
 tags_input_path = allParamsDict["tags_input_path"]
 
-mzXMLs = glob.glob(ms2_path+"/*.ms2")
+stage_0_work = "No"
 
+mzXMLs = glob.glob(ms2_path+"/*.ms2")
+if len(mzXMLs) == 0:
+    mzXMLs_pre = glob.glob(ms2_path+"/*.mzXML")
+    #preprocessing
+    pre_input = " ".join(mzXMLs_pre)
+    cmd = "{} {} {}".format(deisotope_program, params_file, pre_input)
+    print (cmd)
+    os.system(cmd)
+
+    mzXMLs = glob.glob("{}/*/*.ms2".format(curr_path))
+    stage_0_work = "Yes"
 
 idtxt_file = allParamsDict["idtxt_file"]
 
@@ -176,17 +187,61 @@ check_stage = 0
 stages_folder = []
 #make stage 0 folders
 makedirectory("Stage_0")
-stages_folder.append(os.getcwd()+"/Stage_0")
 
-write_log (logFile," \n\n****** Generating Parameter files *********\n")
-write_log (logFile,"  Working for stage 0")
-write_log (logFile,"  Stage_0 results are provided. So, the program will use unmodified jump -s for Stage_0")
-
+scanChargeDf=pd.DataFrame()
+cluster = allParamsDict["cluster"]
 
 
 #JUMP -f on the Stage_0 search results
 
 allParamLines_f, allComments_ff, allParamsDict_f  = storeParamsFile(jump_f_params)
+
+
+
+if stage_0_work == "Yes":
+    stages_folder.append(os.getcwd()+"/Stage_0")
+    ptm_params = "Stage_0/stage_0_comet.params"
+    write_log (logFile," \n\n****** Generating Parameter files *********\n")
+    write_log (logFile," Working for stage 0")
+    write_log (logFile,"   This stage has will search unmodified peptide for the Stage 0 whole proteome")
+    #this updates the stagewise parameters and updates the comet dictionary
+    fdr = "1.5"
+
+    cometParamLines, cometComments, cometParamsDict = storeParamsFile(comet_params)
+    update_comet_dictionary(cometParamsDict, allParamsDict)
+    stagewise_var_mods_update("0", {}, cometParamsDict, variable_mod01_mod_number)
+    makeCometParametersStageWise(ptm_params, cometParamLines, cometComments, cometParamsDict)
+
+    stage_wise_search(stages_folder[0], mzXMLs, comet, logFile, cluster, scanChargeDf)
+    rename_pep_xml(mzXMLs, stages_folder[0])
+    run_tag_program(mzXMLs, stages_folder[0], jump_tag_program, tags_input_path, cluster)
+
+    #jump -f for stage 0
+    os.chdir(stages_folder[0])
+
+        # allParamsDict_f["FDR"] = "0"
+    # allParamsDict_f["unique_protein_or_peptide"] = "peptide"
+    # allParamsDict_f["one_hit_wonders_removal"] = "0"
+    allParamsDict_f["min_XCorr"] = "1"
+    allParamsDict_f["search_engine"] = "comet"
+    allParamsDict_f["pit_file"] = pitfile
+    allParamsDict_f["database"] = database_name
+
+    # if idtxt_file != "0":
+    #     out_params = prepare_jump_f_paramsFile_tag(folders, allParamsDict_f, os.path.basename(folders), fdr)
+    # else:
+    out_params = prepare_jump_f_paramsFile(stages_folder[0], allParamsDict_f, os.path.basename(stages_folder[0]), fdr)
+
+#         cmd = "jump -f "+out_params
+    write_log (logFile,"  Running jump -f for {}".format(os.getcwd()))
+    cmd = "{} {}".format(jump_f_program,out_params)
+
+    os.system(cmd)
+    stage0_idtxt = "{}/sum_Stage_0_FDR_{}/ID.txt".format(stages_folder[0], fdr)
+    accepted_protein_list, scanChargeDf = idtxt_exclude_acceptedPSMs_acceptedProtein(stage0_idtxt)
+else:
+    write_log (logFile,"  Stage_0 results are provided. So, the program will use unmodified jump -s for Stage_0")
+    scanChargeDf = pd.DataFrame()
 
 
 
@@ -259,17 +314,29 @@ write_log (logFile,"    {}".format("\n  ".join(ptms_list)))
 
 #print ("Total stages to search = \n{}".format(stages_folder))
 
-scanChargeDf=None
-cluster = allParamsDict["cluster"]
+
+
+#generate a custom database
+#make a folder called custom inside the database
+
+if allParamsDict["custom_database"] == "1":
+    custom_db_folder = curr_path+"/{}/database/customDB".format(result_folder)
+    makedirectory(custom_db_folder)
+
+    customDB = filtered_IDs_to_fasta(database_name,custom_db_folder, accepted_protein_list)
+    database_name = customDB
+    allParamsDict["database_name"] = database_name
 
 for folders in stages_folder:
-   if "Stage_0" not in folders:
+    if "Stage_0" not in folders:
         stage_wise_search(folders, mzXMLs, comet, logFile, cluster, scanChargeDf)
         rename_pep_xml(mzXMLs, folders)
-        if tags_input_path == "0":
-            write_log(logFile,"  Tags file are missing so the JUMPptm will be performed without tag based filtering")
-        else:
-            run_tag_program(mzXMLs, folders, jump_tag_program, tags_input_path, cluster)
+        run_tag_program(mzXMLs, folders, jump_tag_program, tags_input_path, cluster)
+        
+        # if tags_input_path == "0":
+        #     write_log(logFile,"  Tags file are missing so the JUMPptm will be performed without tag based filtering")
+        # else:
+        #     run_tag_program(mzXMLs, folders, jump_tag_program, tags_input_path, cluster)
    
 
 # #### JUMP -f filter on each stages #####
@@ -295,7 +362,7 @@ for folders in stages_folder:
         # else:
         out_params = prepare_jump_f_paramsFile(folders, allParamsDict_f, os.path.basename(folders), fdr)
 
-#         cmd = "jump -f "+out_params
+    #         cmd = "jump -f "+out_params
         write_log (logFile,"  Running jump -f for {}".format(os.getcwd()))
         cmd = "{} {}".format(jump_f_program,out_params)
 

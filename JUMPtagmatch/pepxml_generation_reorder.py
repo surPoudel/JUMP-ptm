@@ -74,7 +74,7 @@ def writePepXml(pepxml,out,spectrum,prec_neutral_mass,assumed_charge,start_scan,
             try:
                 number_of_matchd_tags = spectrum_tag_total_dict[key_tag]
             except:
-                print ("    No tag matched for {}".format(key_tag))
+                out.write("    No tag matched for {}".format(key_tag))
             out.write("   <search_hit ")
             out.write('{}="{}" '.format("hit_rank",hit["hit_rank"]))
             out.write('{}="{}" '.format("peptide",hit["peptide"]))

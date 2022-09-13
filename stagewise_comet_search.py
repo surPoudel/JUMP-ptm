@@ -395,7 +395,12 @@ def run_tag_program(mzXMLs, folders, jump_tag_program, tags_input_path, cluster)
         basefile = os.path.basename(mz_file)
         
         basefile_noext = basefile.split(".")[0]
-        tag_file = glob.glob(tags_input_path+"/"+basefile_noext+"*.tags")[0]
+        tag_file_list = glob.glob(tags_input_path+"/"+basefile_noext+"*.tags")
+
+        if len(tag_file_list) == 0:
+            tag_file = "0"
+        else:
+            tag_file = tag_file_list[0]
 
         os.chdir(folders+"/"+basefile_noext)
         #this is renamed pepxml file
@@ -428,7 +433,12 @@ def run_tag_program_server(mzXMLs, folders, jump_tag_program, dtasFolder):
         basefile = os.path.basename(mz_file)
         
         basefile_noext = basefile.split(".")[0]
-        tag_file = glob.glob(dtasFolder+"/"+basefile_noext+"*.tags")[0]
+        tag_file_list = glob.glob(dtasFolder+"/"+basefile_noext+"*.tags")
+
+        if len(tag_file_list) == 0:
+            tag_file = "0"
+        else:
+            tag_file = tag_file_list[0]
         
 
         os.chdir(folders+"/"+basefile_noext)
@@ -476,13 +486,18 @@ def stage_wise_search(folders, mzXMLs, comet,logFile,cluster,scanChargeDf=None):
         basefile_noext = basefile.split(".")[0]
         makedirectory(basefile_noext)
         
-        mzxml_file = mz_file.split(".ms2")[0]+".mzXML"
+        #mzxml_file = mz_file.split(".ms2")[0]+".mzXML"
 
         #copy mzxml file to the stage folder
-        softlink_mzxml([mz_file], basefile_noext)
+        if len(scanChargeDf) == 0:
+            softlink_mzxml([mz_file], basefile_noext)
+            # cpFile(mz_file, folders+"/"+basefile_noext)
+        else:
+            make_ms2_removed_accepted_psms(scanChargeDf, mz_file, basefile_noext, logFile)
+            
 
         os.chdir(folders+"/"+basefile_noext)
-        cpFile(mz_file, folders+"/"+basefile_noext)
+        
         cpFile(comet_params, "comet.params")
         
         if cluster == "0":

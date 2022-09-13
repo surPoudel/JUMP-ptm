@@ -267,7 +267,7 @@ def GetMonoInBatch(t_mzXML_fullfile,jump_params,scan_ppm,nrunning_mode):
 	
 	c_mzXML_fullfile = resultpath+'.mzXML'
 	params = Get_params(jump_params)
-	nprocessor=params['nprocessor']# no of multiprocessing nodes
+	nprocessor=params['num_threads']# no of multiprocessing nodes
 	parallel_method=params['parallel_method']# parallel method, 1: multiprocessing package, 2: submitting LSF jobs
 	if len(scan_ppm)==0:# 0: uncorrected; 1: corrected
 		ncorrect = 0
@@ -644,7 +644,7 @@ def main():
 	params = Get_params(jump_params)
 	tmt=params['tmt']
 	nrunning_mode=params['deisotoping_method']
-	nprocessor=params['nprocessor']
+	nprocessor=params['num_threads']
 	nout_format=params['output_format']
 	if nout_format==1:
 		c_format='.ms2'
