@@ -52,10 +52,10 @@ tags_input_path = /home/spoudel1/bin/test_presearch_jumpptm_2_mzXML
 #custom database containing the accepted unique proteins (.fasta format)
 
 #complete path of the fasta file that contains forward and reverse sequence
-database_name = resources/database/custom_filtered_Proteins.fasta
+database_name = /home/spoudel1/Database_AD_Banner/humanComprehensive_v2_ft_mc2_c57_TMTpro.fasta
 
 #pitfile for unique protein inference. This is required to run the filteration program after search
-pitfile = resources/database/humanComprehensive_v1_ft_mc2_c57_TMT_K229.pit
+pitfile = /home/spoudel1/Database_AD_Banner/humanComprehensive_v2_ft_mc2_c57_TMTpro.pit
 
 ######## Output ############################
 #Output folder is always in Pipeline_Results. You could add suffix that will be connected by _ for example if ptm_output_folder_suffix = withQC; output folder will be Pipeline_Results_withQC
