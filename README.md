@@ -23,7 +23,7 @@ Note that JUMPptm only supports 64-bit macOS and Linux. Also, JUMPptm can be run
 
 ----
 ## JUMPptm Publication:
-  * The manuscript is submitted and this part will be updated later.
+  * [publication](https://analyticalsciencejournals.onlinelibrary.wiley.com/doi/full/10.1002/pmic.202100369)
   * If you use JUMPptm as part of a publication, please include this reference.
   
   *Poudel, S., Vanderwall, D., Yuan, Z. F., Wu, Z., Peng, J., & Li, Y. (2022). JUMPptm: Integrated software for sensitive identification of post‐translational modifications and its application in Alzheimer's disease study. Proteomics, 2100369.*
